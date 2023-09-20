@@ -4,12 +4,11 @@
     bg-color="grey-lighten-3"
     density="compact"
     align-tabs="center"
+    center-active
     show-arrows>
         <v-tab
         v-for="(_window, index) in windows"
-        :key="index"
-        width="10"
-        :max-width="10">{{ index + 1 }} / {{ windows.length }}</v-tab>
+        :key="index">{{ index + 1 }} / {{ windows.length }}</v-tab>
     </v-tabs>
     <v-window v-model="windowIndex">
         <v-window-item
