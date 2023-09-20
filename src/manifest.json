@@ -1,0 +1,28 @@
+{
+    "manifest_version": 3,
+    "name": "Tab",
+    "version": "0.1.0",
+    "description": "To make it easier for you to manage browser tab pages",
+    "icons": {
+        "16": "./assets/icon_16.png",
+        "48": "./assets/icon_48.png",
+        "128": "./assets/icon_128.png"
+    },
+    "action": {
+        "default_icon": {
+            "16": "./assets/icon_16.png",
+            "24": "./assets/icon_24.png",
+            "32": "./assets/icon_32.png"
+        },
+        "default_title": "Tab",
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "type": "module",
+        "service_worker": "service.js"
+    },
+    "permissions": [
+        "tabs",
+        "activeTab"
+    ]
+}
