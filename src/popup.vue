@@ -9,7 +9,7 @@
         v-for="(_window, index) in windows"
         :key="index"
         width="10"
-        :max-width="10">{{ index + 1 }}</v-tab>
+        :max-width="10">{{ index + 1 }} / {{ windows.length }}</v-tab>
     </v-tabs>
     <v-window v-model="windowIndex">
         <v-window-item
