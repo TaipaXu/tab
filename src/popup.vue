@@ -66,10 +66,16 @@ interface BrowsorWindow {
 
 const windows: Ref<BrowsorWindow[]> = ref([]);
 
-browser.runtime.onMessage.addListener((message) => {
+browser.runtime.onMessage.addListener(async (message) => {
     console.log('message', message);
     if (message.type === 'tabs') {
         windows.value = message.data;
+
+        const [tab] = await browser.tabs.query({ currentWindow: true, active: true });
+        const index = windows.value.findIndex((item) => item.id === tab.windowId);
+        if (index >= 0) {
+            windowIndex.value = index;
+        }
     }
 });
 
