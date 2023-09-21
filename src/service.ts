@@ -15,6 +15,7 @@ let windows: BrowsorWindow[] = [];
 
 const getAllTabs = async () => {
     const tabs = await browser.tabs.query({});
+    console.log('tabs', tabs);
     windows = tabs.reduce((acc, tab) => {
         const window_ = acc.find((window) => window.id === tab.windowId);
         if (window_) {
@@ -43,6 +44,16 @@ const getAllTabs = async () => {
     });
 };
 
+const getTabCount = async () => {
+    const tabs = await browser.tabs.query({});
+    const count = tabs.length;
+    browser.action.setBadgeText({
+        text: count.toString()
+    });
+};
+
+getTabCount();
+
 browser.runtime.onMessage.addListener(async (message: any, sender: browser.Runtime.MessageSender) => {
     console.log('message', message, sender);
     if (message.type === 'getTabs') {
@@ -61,11 +72,13 @@ browser.runtime.onMessage.addListener(async (message: any, sender: browser.Runti
 
 browser.tabs.onCreated.addListener(() => {
     console.log('tabs.onCreated');
+    getTabCount();
 });
 
 browser.tabs.onRemoved.addListener(() => {
     console.log('tabs.onRemoved');
     getAllTabs();
+    getTabCount();
 });
 
 browser.tabs.onUpdated.addListener(() => {
