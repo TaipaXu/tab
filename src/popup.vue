@@ -1,15 +1,27 @@
 <template>
-    <v-tabs
-    v-model="windowIndex"
-    bg-color="grey-lighten-3"
-    density="compact"
-    align-tabs="center"
-    center-active
-    show-arrows>
-        <v-tab
-        v-for="(_window, index) in windows"
-        :key="index">{{ index + 1 }} / {{ windows.length }}</v-tab>
-    </v-tabs>
+    <v-toolbar density="compact">
+        <v-toolbar-title>Tab</v-toolbar-title>
+
+        <v-spacer></v-spacer>
+
+        <v-btn
+        icon="mdi-eye-outline"
+        @click="showWindow"></v-btn>
+
+        <template #extension>
+            <v-tabs
+            v-model="windowIndex"
+            bg-color="grey-lighten-3"
+            density="compact"
+            align-tabs="center"
+            center-active
+            show-arrows>
+                <v-tab
+                v-for="(_window, index) in windows"
+                :key="index">{{ index + 1 }} / {{ windows.length }}</v-tab>
+            </v-tabs>
+        </template>
+    </v-toolbar>
     <v-window v-model="windowIndex">
         <v-window-item
         v-for="(window, index) in windows"
@@ -96,12 +108,20 @@ const closeTab = (tabId?: number) => {
         tabId
     });
 };
+
+const showWindow = () => {
+    const windowId = windows.value[windowIndex.value].id;
+    browser.runtime.sendMessage({
+        type: 'showWindow',
+        windowId
+    });
+};
 </script>
 
 <style lang="scss">
 #app {
     width: 400px;
-    height: 400px;
+    height: 600px;
     display: flex;
     flex-direction: column;
 
