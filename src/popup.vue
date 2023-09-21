@@ -8,6 +8,10 @@
         icon="mdi-eye-outline"
         @click="showWindow"></v-btn>
 
+        <v-btn
+        icon="mdi-delete-outline"
+        @click="closeWindow"></v-btn>
+
         <template #extension>
             <v-tabs
             v-model="windowIndex"
@@ -113,6 +117,14 @@ const showWindow = () => {
     const windowId = windows.value[windowIndex.value].id;
     browser.runtime.sendMessage({
         type: 'showWindow',
+        windowId
+    });
+};
+
+const closeWindow = () => {
+    const windowId = windows.value[windowIndex.value].id;
+    browser.runtime.sendMessage({
+        type: 'closeWindow',
         windowId
     });
 };
