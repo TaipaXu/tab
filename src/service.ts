@@ -62,7 +62,7 @@ browser.runtime.onMessage.addListener(async (message: any, sender: browser.Runti
         browser.tabs.remove(message.tabId);
     } else if (message.type === 'switchToTab') {
         await browser.windows.update(message.windowId, { focused: true });
-        browser.tabs.update(message.tabId, { highlighted: true });
+        browser.tabs.update(message.tabId, { active: true });
     } else if (message.type === 'showWindow') {
         browser.windows.update(message.windowId, { focused: true });
     } else if (message.type === 'closeWindow') {
