@@ -1,58 +1,114 @@
 <template>
-    <v-toolbar density="compact">
-        <v-toolbar-title>Tab</v-toolbar-title>
+    <template v-if="!searchMode">
+        <v-toolbar density="compact">
+            <v-toolbar-title>Tab</v-toolbar-title>
 
-        <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
 
-        <v-btn
-        icon="mdi-eye-outline"
-        @click="showWindow"></v-btn>
+            <v-btn
+            icon="mdi-eye-outline"
+            @click="showWindow"></v-btn>
 
-        <v-btn
-        icon="mdi-delete-outline"
-        @click="closeWindow"></v-btn>
+            <v-btn
+            icon="mdi-delete-outline"
+            @click="closeWindow"></v-btn>
 
-        <template #extension>
-            <v-tabs
-            v-model="windowIndex"
-            bg-color="grey-lighten-3"
-            density="compact"
-            align-tabs="center"
-            center-active
-            show-arrows>
-                <v-tab
-                v-for="(_window, index) in windows"
-                :key="index">{{ index + 1 }} / {{ windows.length }}</v-tab>
-            </v-tabs>
-        </template>
-    </v-toolbar>
-    <v-window v-model="windowIndex">
-        <v-window-item
-        v-for="(window, index) in windows"
-        :key="index">
-            <v-list :lines="false" density="compact" nav>
-                <v-list-item
-                v-for="tab in window.tabs"
-                :key="tab.id"
-                :active="tabId === tab.id"
-                @click="switchToTab(window.id, tab.id)">
-                    <template #prepend>
-                        <v-img :src="tab.favIcon" :width="16" />
-                    </template>
+            <v-btn icon @click="enterSearchMode">
+                <v-icon>mdi-magnify</v-icon>
+            </v-btn>
 
-                    <v-list-item-title style="margin-left: 12px;">
-                        {{ tab.title }}
-                    </v-list-item-title>
 
-                    <template #append>
-                        <v-icon
-                        icon="mdi-close"
-                        @click="closeTab(tab.id)"></v-icon>
-                    </template>
-                </v-list-item>
+            <template #extension>
+                <v-tabs
+                v-model="windowIndex"
+                bg-color="grey-lighten-3"
+                density="compact"
+                align-tabs="center"
+                center-active
+                show-arrows>
+                    <v-tab
+                    v-for="(_window, index) in windows"
+                    :key="index">{{ index + 1 }} / {{ windows.length }}</v-tab>
+                </v-tabs>
+            </template>
+        </v-toolbar>
+        <v-window v-model="windowIndex">
+            <v-window-item
+            v-for="(browserWindow, index) in windows"
+            :key="index">
+                <v-list :lines="false" density="compact" nav>
+                    <v-list-item
+                    v-for="tab in browserWindow.tabs"
+                    :key="tab.id"
+                    :active="tabId === tab.id"
+                    @click="switchToTab(browserWindow.id, tab.id)">
+                        <template #prepend>
+                            <v-img :src="tab.favIcon" :width="16" />
+                        </template>
+
+                        <v-list-item-title style="margin-left: 12px;">
+                            {{ tab.title }}
+                        </v-list-item-title>
+
+                        <template #append>
+                            <v-icon
+                            icon="mdi-close"
+                            @click="closeTab(tab.id)"></v-icon>
+                        </template>
+                    </v-list-item>
+                </v-list>
+            </v-window-item>
+        </v-window>
+    </template>
+
+    <template v-else>
+        <div class="search-section">
+            <v-card
+            class="mx-auto search__input"
+            color="grey-lighten-3">
+                <v-card-text>
+                    <v-text-field
+                    ref="$searchInput"
+                    v-model="searchText"
+                    density="compact"
+                    variant="solo"
+                    label="Search tabs"
+                    append-inner-icon="mdi-close"
+                    single-line
+                    hide-details
+                    @click:append-inner="exitSearchMode"></v-text-field>
+                </v-card-text>
+            </v-card>
+
+            <v-list class="search__items">
+                <template v-for="(browserWindow, index) in searchedWindowTabs" :key="index">
+                    <v-list-subheader>
+                        Window {{ index + 1 }}
+                    </v-list-subheader>
+
+                    <v-list-item
+                    v-for="tab in browserWindow.tabs"
+                    :key="tab.id"
+                    :active="tabId === tab.id"
+                    @click="switchToTab(browserWindow.id, tab.id)">
+                        <template #prepend>
+                            <v-img :src="tab.favIcon" :width="16" />
+                        </template>
+
+                        <v-list-item-title style="margin-left: 12px;">
+                            {{ tab.title }}
+                        </v-list-item-title>
+
+                        <template #append>
+                            <v-icon
+                            icon="mdi-close"
+                            @click="closeTab(tab.id)"></v-icon>
+                        </template>
+                    </v-list-item>
+                </template>
             </v-list>
-        </v-window-item>
-    </v-window>
+        </div>
+    </template>
 </template>
 
 <script setup lang="ts">
@@ -128,6 +184,39 @@ const closeWindow = () => {
         windowId
     });
 };
+
+const $searchInput = ref();
+const searchMode: Ref<boolean> = ref(false);
+const searchText: Ref<string> = ref('');
+const enterSearchMode = () => {
+    searchMode.value = true;
+    searchText.value = '';
+    nextTick(() => {
+        $searchInput.value.focus();
+    });
+};
+const exitSearchMode = () => {
+    searchMode.value = false;
+    searchText.value = '';
+};
+const searchedWindowTabs = computed(() => {
+    const windowTabs: BrowsorWindow[] = [];
+    for (const window of windows.value) {
+        const tabs: Tab[] = [];
+        for (const tab of window.tabs) {
+            if (tab.title?.includes(searchText.value)) {
+                tabs.push(tab);
+            }
+        }
+        if (tabs.length > 0) {
+            windowTabs.push({
+                id: window.id,
+                tabs
+            });
+        }
+    }
+    return windowTabs;
+});
 </script>
 
 <style lang="scss">
@@ -161,6 +250,36 @@ const closeWindow = () => {
         &::-webkit-scrollbar-thumb {
             background: #eaeaea;
             border-radius: 3px;
+        }
+    }
+
+    .search {
+        &-section {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        &__input {
+            width: 100%;
+        }
+
+        &__items {
+            flex: 1;
+
+            &::-webkit-scrollbar-track {
+                border-radius: 0;
+                background: transparent;
+            }
+
+            &::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            &::-webkit-scrollbar-thumb {
+                background: #eaeaea;
+                border-radius: 3px;
+            }
         }
     }
 }
