@@ -21,6 +21,8 @@
             <template #extension>
                 <v-tabs
                 v-model="windowIndex"
+                next-icon="mdi-arrow-right-bold-box-outline"
+                prev-icon="mdi-arrow-left-bold-box-outline"
                 bg-color="grey-lighten-3"
                 density="compact"
                 align-tabs="center"
