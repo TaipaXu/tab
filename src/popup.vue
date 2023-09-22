@@ -216,7 +216,7 @@ const searchedWindowTabs = computed(() => {
     for (const window of windows.value) {
         const tabs: Tab[] = [];
         for (const tab of window.tabs) {
-            if (tab.title?.includes(searchText.value)) {
+            if (tab.title?.toLocaleLowerCase().includes(searchText.value.toLocaleLowerCase())) {
                 tabs.push(tab);
             }
         }
