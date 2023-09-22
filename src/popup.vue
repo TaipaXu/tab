@@ -82,8 +82,13 @@
 
             <v-list class="search__items">
                 <template v-for="(browserWindow, index) in searchedWindowTabs" :key="index">
-                    <v-list-subheader>
+                    <v-list-subheader class="search__window">
                         Window {{ index + 1 }}
+                        <v-btn
+                        icon="mdi-eye-outline"
+                        variant="text"
+                        density="compact"
+                        @click="showWindowById(browserWindow.id)"></v-btn>
                     </v-list-subheader>
 
                     <v-list-item
@@ -171,6 +176,13 @@ const closeTab = (tabId?: number) => {
 
 const showWindow = () => {
     const windowId = windows.value[windowIndex.value].id;
+    browser.runtime.sendMessage({
+        type: 'showWindow',
+        windowId
+    });
+};
+
+const showWindowById = (windowId?: number) => {
     browser.runtime.sendMessage({
         type: 'showWindow',
         windowId
@@ -279,6 +291,15 @@ const searchedWindowTabs = computed(() => {
             &::-webkit-scrollbar-thumb {
                 background: #eaeaea;
                 border-radius: 3px;
+            }
+        }
+
+        &__window {
+            .v-list-subheader__text {
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
             }
         }
     }
