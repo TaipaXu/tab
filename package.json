@@ -1,5 +1,6 @@
 {
     "name": "tab",
+    "type": "module",
     "description": "To make it easier for you to manage browser tab pages",
     "version": "0.1.0",
     "bugs": "https://github.com/TaipaXu/tab/issues",

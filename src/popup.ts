@@ -1,14 +1,20 @@
 import App from './popup.vue';
-import 'vuetify/styles';
 import { createVuetify } from 'vuetify';
+import 'vuetify/styles';
+import colors from 'vuetify/lib/util/colors';
 import '@mdi/font/css/materialdesignicons.css';
 
-import * as components from 'vuetify/components';
-import * as directives from 'vuetify/directives';
-
 const vuetify = createVuetify({
-    components,
-    directives
+    theme: {
+        themes: {
+            light: {
+                colors: {
+                    primary: colors.red.darken3,
+                    secondary: colors.red.lighten4
+                }
+            }
+        }
+    }
 });
 
 const app = createApp(App);

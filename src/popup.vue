@@ -1,7 +1,9 @@
 <template>
     <template v-if="!searchMode">
-        <v-toolbar density="compact">
-            <v-toolbar-title>Tab</v-toolbar-title>
+        <v-toolbar density="compact" color="primary">
+            <v-toolbar-title class="title">
+                Tab
+            </v-toolbar-title>
 
             <v-spacer></v-spacer>
 
@@ -239,6 +241,10 @@ const searchedWindowTabs = computed(() => {
     height: 600px;
     display: flex;
     flex-direction: column;
+
+    .title {
+        user-select: none;
+    }
 
     .v-window {
         flex: 1;
