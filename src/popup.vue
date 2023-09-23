@@ -8,6 +8,7 @@
             <v-spacer></v-spacer>
 
             <v-btn
+            v-show="windows[windowIndex].id !== windowId"
             icon="mdi-eye-outline"
             @click="showWindow"></v-btn>
 
@@ -143,9 +144,11 @@ import { addGroup as DAddGroup } from '@/data/page';
 let inited = false;
 let windowIndex: Ref<number> = ref(0);
 
+const windowId: Ref<number | undefined> = ref();
 const tabId: Ref<number | undefined> = ref();
 onMounted(async () => {
     const [tab] = await browser.tabs.query({ currentWindow: true, active: true });
+    windowId.value = tab.windowId;
     tabId.value = tab.id;
     console.log('id', tab.id);
 });
