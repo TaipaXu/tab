@@ -123,6 +123,8 @@
 <script setup lang="ts">
 import browser from 'webextension-polyfill';
 import { Ref } from 'vue';
+import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
+import { Tab as MTab } from '@/models/tab';
 
 let windowIndex: Ref<number> = ref(0);
 
@@ -133,18 +135,7 @@ onMounted(async () => {
     console.log('id', tab.id);
 });
 
-interface Tab {
-    id?: number,
-    title?: string,
-    favIcon?: string,
-}
-
-interface BrowsorWindow {
-    id?: number,
-    tabs: Tab[],
-}
-
-const windows: Ref<BrowsorWindow[]> = ref([]);
+const windows: Ref<MBrowsorWindow[]> = ref([]);
 
 browser.runtime.onMessage.addListener(async (message) => {
     console.log('message', message);
@@ -216,9 +207,9 @@ const exitSearchMode = () => {
     searchText.value = '';
 };
 const searchedWindowTabs = computed(() => {
-    const windowTabs: BrowsorWindow[] = [];
+    const windowTabs: MBrowsorWindow[] = [];
     for (const window of windows.value) {
-        const tabs: Tab[] = [];
+        const tabs: MTab[] = [];
         for (const tab of window.tabs) {
             if (tab.title?.toLocaleLowerCase().includes(searchText.value.toLocaleLowerCase())) {
                 tabs.push(tab);

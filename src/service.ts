@@ -1,31 +1,20 @@
 import browser from 'webextension-polyfill';
-
-interface Tab {
-    id?: number,
-    title?: string,
-    favIcon?: string,
-}
-
-interface BrowsorWindow {
-    id?: number,
-    tabs: Tab[],
-}
-
-let windows: BrowsorWindow[] = [];
+import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 
 const getAllTabs = async () => {
     const tabs = await browser.tabs.query({});
     console.log('tabs', tabs);
-    windows = tabs.reduce((acc, tab) => {
-        const window_ = acc.find((window) => window.id === tab.windowId);
-        if (window_) {
-            window_.tabs.push({
+    const windows: MBrowsorWindow[] = [];
+    for (const tab of tabs) {
+        const window = windows.find(w => w.id === tab.windowId);
+        if (window) {
+            window.tabs.push({
                 id: tab.id,
                 title: tab.title,
                 favIcon: tab.favIconUrl
             });
         } else {
-            acc.push({
+            windows.push({
                 id: tab.windowId,
                 tabs: [{
                     id: tab.id,
@@ -34,8 +23,7 @@ const getAllTabs = async () => {
                 }]
             });
         }
-        return acc;
-    }, [] as BrowsorWindow[]);
+    }
     console.log('windows', windows);
 
     browser.runtime.sendMessage({
@@ -88,3 +76,9 @@ browser.tabs.onUpdated.addListener(() => {
 browser.action.onClicked.addListener(() => {
     console.log('browserAction.onClicked');
 });
+
+const getAllWindows = async () => {
+    const windows = await browser.windows.getAll({});
+    console.log('windows', windows);
+};
+getAllWindows();
