@@ -1,8 +1,7 @@
 <template>
     <v-layout
-    color="colors.red.darken3"
     density="compact">
-        <v-app-bar>
+        <v-app-bar color="primary">
             <v-toolbar-title class="title" @click="openHomepage">
                 Tab
             </v-toolbar-title>
@@ -15,6 +14,13 @@
             class="group">
                 <v-list-subheader>
                     {{ group.pages.length }} page{{ group.pages.length === 1 ? '' : 's' }}
+
+                    <v-btn
+                    icon="mdi-close"
+                    variant="text"
+                    density="compact"
+                    style="margin-left: 10px;"
+                    @click="removeGroup(group)"></v-btn>
                 </v-list-subheader>
                 <v-list-item
                 v-for="page in group.pages"
@@ -43,7 +49,11 @@
 
 <script setup lang="ts">
 import { Ref } from 'vue';
-import { getGroups as DGetGroups, removePage as DRemovePage } from '@/data/page';
+import {
+    getGroups as DGetGroups,
+    removeGroup as DRemoveGroup,
+    removePage as DRemovePage
+} from '@/data/page';
 import { Group as MGroup } from '@/models/group';
 import { Page as MPage } from '@/models/page';
 
@@ -54,6 +64,11 @@ const getGroups = async () => {
 };
 
 getGroups();
+
+const removeGroup = async (group: MGroup) => {
+    await DRemoveGroup(group);
+    getGroups();
+};
 
 const removePage = async (group: MGroup, page: MPage) => {
     await DRemovePage(group, page);
