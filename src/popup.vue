@@ -15,6 +15,10 @@
             icon="mdi-delete-outline"
             @click="closeWindow"></v-btn>
 
+            <v-btn
+            icon="mdi-database-outline"
+            @click="openSavePage"></v-btn>
+
             <v-btn icon @click="enterSearchMode">
                 <v-icon>mdi-magnify</v-icon>
             </v-btn>
@@ -227,6 +231,12 @@ const searchedWindowTabs = computed(() => {
 
 const openHomepage = () => {
     globalThis.open('https://github.com/TaipaXu/tab');
+};
+
+const openSavePage = () => {
+    browser.tabs.create({
+        url: './save.html'
+    });
 };
 </script>
 
