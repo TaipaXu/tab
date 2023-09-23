@@ -8,11 +8,11 @@
             </v-toolbar-title>
         </v-app-bar>
 
-        <v-main>
+        <v-main class="main">
             <v-list
             v-for="(group) in groups"
             :key="group.id"
-            style="margin-top: 10px;">
+            class="group">
                 <v-list-subheader>
                     {{ group.pages.length }} pages
                 </v-list-subheader>
@@ -72,9 +72,29 @@ body {
 #app {
     width: 100%;
     height: 100%;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar-track {
+        border-radius: 0;
+        background: transparent;
+    }
+
+    &::-webkit-scrollbar {
+        width: 4px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background: #eaeaea;
+        border-radius: 3px;
+    }
 }
+
 .title {
     cursor: pointer;
     user-select: none;
+}
+
+.group {
+    margin-top: 10px;
 }
 </style>
