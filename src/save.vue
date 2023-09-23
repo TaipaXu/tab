@@ -14,7 +14,7 @@
             :key="group.id"
             class="group">
                 <v-list-subheader>
-                    {{ group.pages.length }} pages
+                    {{ group.pages.length }} page{{ group.pages.length === 1 ? '' : 's' }}
                 </v-list-subheader>
                 <v-list-item
                 v-for="page in group.pages"
