@@ -60,8 +60,13 @@
 
                         <template #append>
                             <v-icon
+                            icon="mdi-database-plus"
+                            @click.stop="saveAndClosePage(tab)"></v-icon>
+
+                            <v-icon
                             icon="mdi-close"
-                            @click="closeTab(tab.id)"></v-icon>
+                            style="margin-left: 8px;"
+                            @click.stop="closeTab(tab.id)"></v-icon>
                         </template>
                     </v-list-item>
                 </v-list>
@@ -129,6 +134,7 @@ import browser from 'webextension-polyfill';
 import { Ref } from 'vue';
 import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import { Tab as MTab } from '@/models/tab';
+import { addGroup } from '@/data/page';
 
 let windowIndex: Ref<number> = ref(0);
 
@@ -237,6 +243,21 @@ const openSavePage = () => {
     browser.tabs.create({
         url: './save.html'
     });
+};
+
+const saveAndClosePage = (tab: MTab) => {
+    addGroup({
+        id: crypto.randomUUID(),
+        pages: [
+            {
+                id: crypto.randomUUID(),
+                title: tab.title,
+                favIcon: tab.favIcon,
+                url: tab.url
+            }
+        ]
+    });
+    closeTab(tab.id);
 };
 </script>
 

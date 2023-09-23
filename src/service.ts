@@ -1,5 +1,6 @@
 import browser from 'webextension-polyfill';
 import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
+import { getGroups } from '@/data/page';
 
 const getAllTabs = async () => {
     const tabs = await browser.tabs.query({});
@@ -11,7 +12,8 @@ const getAllTabs = async () => {
             window.tabs.push({
                 id: tab.id,
                 title: tab.title,
-                favIcon: tab.favIconUrl
+                favIcon: tab.favIconUrl,
+                url: tab.url
             });
         } else {
             windows.push({
@@ -19,7 +21,8 @@ const getAllTabs = async () => {
                 tabs: [{
                     id: tab.id,
                     title: tab.title,
-                    favIcon: tab.favIconUrl
+                    favIcon: tab.favIconUrl,
+                    url: tab.url
                 }]
             });
         }
@@ -42,6 +45,15 @@ const getTabCount = async () => {
 
 getTabCount();
 
+const getSaves = async () => {
+    const groups = await getGroups();
+    console.log('groups', groups);
+    browser.runtime.sendMessage({
+        type: 'saves',
+        data: groups
+    });
+};
+
 browser.runtime.onMessage.addListener(async (message: any, sender: browser.Runtime.MessageSender) => {
     console.log('message', message, sender);
     if (message.type === 'getTabs') {
@@ -55,6 +67,8 @@ browser.runtime.onMessage.addListener(async (message: any, sender: browser.Runti
         browser.windows.update(message.windowId, { focused: true });
     } else if (message.type === 'closeWindow') {
         browser.windows.remove(message.windowId);
+    } else if (message.type === 'getSaves') {
+        getSaves();
     }
 });
 
