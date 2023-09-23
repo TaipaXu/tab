@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "Tab",
     "description": "To make it easier for you to manage browser tab pages",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "homepage_url": "https://github.com/TaipaXu/tab",
     "icons": {
         "16": "./assets/icon_16.png",
