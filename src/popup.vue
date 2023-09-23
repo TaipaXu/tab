@@ -140,6 +140,7 @@ import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import { Tab as MTab } from '@/models/tab';
 import { addGroup as DAddGroup } from '@/data/page';
 
+let inited = false;
 let windowIndex: Ref<number> = ref(0);
 
 const tabId: Ref<number | undefined> = ref();
@@ -158,7 +159,8 @@ browser.runtime.onMessage.addListener(async (message) => {
 
         const [tab] = await browser.tabs.query({ currentWindow: true, active: true });
         const index = windows.value.findIndex((item) => item.id === tab.windowId);
-        if (index >= 0) {
+        if (index >= 0 && (!inited || windows.value[index].tabs.length !== 0)) {
+            inited = true;
             windowIndex.value = index;
         }
     }
