@@ -20,7 +20,15 @@
                 v-for="page in group.pages"
                 :key="page.id"
                 @click="openPage(page.url)">
-                    <v-list-item-title>{{ page.title }}</v-list-item-title>
+                    <template #prepend>
+                        <v-img :src="page.favIcon" :width="16" />
+                    </template>
+
+                    <v-list-item-title style="margin-left: 12px;">{{ page.title }}</v-list-item-title>
+
+                    <v-list-item-subtitle style="margin-left: 12px;">
+                        {{ page.url }}
+                    </v-list-item-subtitle>
 
                     <template #append>
                         <v-icon
