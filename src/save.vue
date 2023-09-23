@@ -16,6 +16,13 @@
                     {{ group.pages.length }} page{{ group.pages.length === 1 ? '' : 's' }}
 
                     <v-btn
+                    icon="mdi-web"
+                    variant="text"
+                    density="compact"
+                    style="margin-left: 10px;"
+                    @click="openGroup(group)"></v-btn>
+
+                    <v-btn
                     icon="mdi-close"
                     variant="text"
                     density="compact"
@@ -48,6 +55,7 @@
 </template>
 
 <script setup lang="ts">
+import browser from 'webextension-polyfill';
 import { Ref } from 'vue';
 import {
     getGroups as DGetGroups,
@@ -65,18 +73,32 @@ const getGroups = async () => {
 
 getGroups();
 
+const openGroup = (group: MGroup) => {
+    const urls: string[] = [];
+    group.pages.forEach((page) => {
+        if (page.url) {
+            urls.push(page.url);
+        }
+    });
+    if (urls.length > 0) {
+        browser.windows.create({
+            url: urls
+        });
+    }
+};
+
 const removeGroup = async (group: MGroup) => {
     await DRemoveGroup(group);
     getGroups();
 };
 
+const openPage = (url?: string) => {
+    globalThis.open(url);
+};
+
 const removePage = async (group: MGroup, page: MPage) => {
     await DRemovePage(group, page);
     getGroups();
-};
-
-const openPage = (url?: string) => {
-    globalThis.open(url);
 };
 
 const openHomepage = () => {
