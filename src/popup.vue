@@ -16,6 +16,10 @@
             @click="closeWindow"></v-btn>
 
             <v-btn
+            icon="mdi-database-plus"
+            @click="saveAndCloseWindow"></v-btn>
+
+            <v-btn
             icon="mdi-database-outline"
             @click="openSavePage"></v-btn>
 
@@ -134,7 +138,7 @@ import browser from 'webextension-polyfill';
 import { Ref } from 'vue';
 import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import { Tab as MTab } from '@/models/tab';
-import { addGroup } from '@/data/page';
+import { addGroup as DAddGroup } from '@/data/page';
 
 let windowIndex: Ref<number> = ref(0);
 
@@ -246,7 +250,7 @@ const openSavePage = () => {
 };
 
 const saveAndClosePage = (tab: MTab) => {
-    addGroup({
+    DAddGroup({
         id: crypto.randomUUID(),
         pages: [
             {
@@ -258,6 +262,20 @@ const saveAndClosePage = (tab: MTab) => {
         ]
     });
     closeTab(tab.id);
+};
+
+const saveAndCloseWindow = () => {
+    const tabs = windows.value[windowIndex.value].tabs;
+    DAddGroup({
+        id: crypto.randomUUID(),
+        pages: tabs.map((tab) => ({
+            id: crypto.randomUUID(),
+            title: tab.title,
+            favIcon: tab.favIcon,
+            url: tab.url
+        }))
+    });
+    closeWindow();
 };
 </script>
 
