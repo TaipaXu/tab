@@ -1,7 +1,7 @@
 <template>
     <template v-if="!searchMode">
         <v-toolbar density="compact" color="primary">
-            <v-toolbar-title class="title">
+            <v-toolbar-title class="title" @click="openHomepage">
                 Tab
             </v-toolbar-title>
 
@@ -233,6 +233,10 @@ const searchedWindowTabs = computed(() => {
     }
     return windowTabs;
 });
+
+const openHomepage = () => {
+    globalThis.open('https://github.com/TaipaXu/tab');
+};
 </script>
 
 <style lang="scss">
@@ -243,6 +247,7 @@ const searchedWindowTabs = computed(() => {
     flex-direction: column;
 
     .title {
+        cursor: pointer;
         user-select: none;
     }
 
