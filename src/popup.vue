@@ -83,7 +83,8 @@
         <div class="search-section">
             <v-card
             class="mx-auto search__input"
-            color="grey-lighten-3">
+            color="primary"
+            rounded="0">
                 <v-card-text>
                     <v-text-field
                     ref="$searchInput"
