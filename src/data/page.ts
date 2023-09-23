@@ -13,7 +13,7 @@ export const setGroups = async (groups: MGroup[]) => {
 
 export const addGroup = async (group: MGroup) => {
     const groups = await getGroups();
-    groups.push(group);
+    groups.unshift(group);
     await setGroups(groups);
 };
 
