@@ -104,6 +104,7 @@
                     <v-list-subheader class="search__window">
                         Window {{ index + 1 }}
                         <v-btn
+                        v-show="browserWindow.id !== windowId"
                         icon="mdi-eye-outline"
                         variant="text"
                         density="compact"
