@@ -3,6 +3,9 @@
         <v-toolbar density="compact" color="primary">
             <v-toolbar-title class="title" @click="openHomepage">
                 Tab
+                <span class="count">
+                    {{ windows.reduce((total, window) => total + window.tabs.length, 0) }}
+                </span>
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
@@ -41,7 +44,10 @@
                 show-arrows>
                     <v-tab
                     v-for="(_window, index) in windows"
-                    :key="index">{{ index + 1 }} / {{ windows.length }}</v-tab>
+                    :key="index">
+                        {{ index + 1 }} / {{ windows.length }}
+                        <span class="count">{{ _window.tabs.length }}</span>
+                    </v-tab>
                 </v-tabs>
             </template>
         </v-toolbar>
@@ -324,6 +330,11 @@ const saveAndCloseWindow = () => {
             background: #eaeaea;
             border-radius: 3px;
         }
+    }
+
+    .count {
+        margin-left: 4px;
+        font-size: 8px;
     }
 
     .search {
