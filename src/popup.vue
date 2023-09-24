@@ -252,7 +252,8 @@ const openHomepage = () => {
 
 const openSavePage = () => {
     browser.tabs.create({
-        url: './save.html'
+        url: './save.html',
+        pinned: true
     });
 };
 
