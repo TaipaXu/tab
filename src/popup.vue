@@ -108,7 +108,11 @@
             <v-list class="search__items">
                 <template v-for="(browserWindow, index) in searchedWindowTabs" :key="index">
                     <v-list-subheader class="search__window">
-                        Window {{ index + 1 }}
+                        <div>
+                            Window {{ index + 1 }}
+                            <span class="count">{{ browserWindow.tabs.length }}</span>
+                        </div>
+
                         <v-btn
                         v-show="browserWindow.id !== windowId"
                         icon="mdi-eye-outline"
