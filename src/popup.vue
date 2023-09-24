@@ -43,10 +43,10 @@
                 center-active
                 show-arrows>
                     <v-tab
-                    v-for="(_window, index) in windows"
+                    v-for="(window, index) in windows"
                     :key="index">
                         {{ index + 1 }} / {{ windows.length }}
-                        <span class="count">{{ _window.tabs.length }}</span>
+                        <span class="count">{{ window.tabs.length }}</span>
                     </v-tab>
                 </v-tabs>
             </template>

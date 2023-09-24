@@ -4,6 +4,7 @@
         <v-app-bar color="primary">
             <v-toolbar-title class="title" @click="openHomepage">
                 Tab
+                <span class="count">{{ groups.reduce((total, window) => total + window.pages.length, 0) }}</span>
             </v-toolbar-title>
         </v-app-bar>
 
@@ -137,6 +138,11 @@ body {
 .title {
     cursor: pointer;
     user-select: none;
+}
+
+.count {
+    margin-left: 4px;
+    font-size: 10px;
 }
 
 .group {
