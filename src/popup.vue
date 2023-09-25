@@ -172,6 +172,10 @@
                     <v-list-item-title>
                         {{ page.title }}
                     </v-list-item-title>
+
+                    <v-list-item-subtitle>
+                        {{ page.lastVisitDateTime ? formatTimestamp(page.lastVisitDateTime) : '' }}
+                    </v-list-item-subtitle>
                 </v-list-item>
             </v-list>
         </div>
@@ -183,8 +187,9 @@ import browser from 'webextension-polyfill';
 import { Ref } from 'vue';
 import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import { Tab as MTab } from '@/models/tab';
-import { Page as MPage } from '@/models/page';
+import { HistoryPage as MHistoryPage } from '@/models/historyPage';
 import { addGroup as DAddGroup } from '@/data/page';
+import { formatTimestamp } from '@/utils/datetime';
 
 const enum Mode {
     Tab,
@@ -297,7 +302,7 @@ const searchedWindowTabs = computed(() => {
     return windowTabs;
 });
 
-const historyPages: Ref<MPage[]> = ref([]);
+const historyPages: Ref<MHistoryPage[]> = ref([]);
 const enterHistoryMode = () => {
     mode.value = Mode.Hisotry;
     browser.runtime.sendMessage({

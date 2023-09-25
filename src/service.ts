@@ -1,6 +1,6 @@
 import browser from 'webextension-polyfill';
 import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
-import { Page as MPage } from '@/models/page';
+import { HistoryPage as MHistoryPage } from '@/models/historyPage';
 import { getGroups } from '@/data/page';
 
 const getAllTabs = async () => {
@@ -61,12 +61,13 @@ const getHistory = async() => {
         maxResults: 20
     });
     console.log('historyPages', historyPages);
-    const pages: MPage[] = [];
+    const pages: MHistoryPage[] = [];
     for (const item of historyPages) {
         pages.push({
             id: item.id,
             title: item.title,
-            url: item.url
+            url: item.url,
+            lastVisitDateTime: item.lastVisitTime
         });
     }
     browser.runtime.sendMessage({
