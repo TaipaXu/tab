@@ -1,5 +1,5 @@
 export interface HistoryPage {
-    id: string,
+    id?: string,
     title?: string,
     url?: string,
     lastVisitDateTime?: number

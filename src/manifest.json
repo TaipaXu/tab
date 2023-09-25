@@ -26,7 +26,7 @@
     "permissions": [
         "tabs",
         "activeTab",
-        "history",
+        "sessions",
         "storage"
     ]
 }

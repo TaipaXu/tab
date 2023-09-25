@@ -56,20 +56,20 @@ const getSaves = async () => {
 };
 
 const getHistory = async() => {
-    const historyPages = await browser.history.search({
-        text: '',
+    const devices: browser.Sessions.Session[] = await browser.sessions.getRecentlyClosed({
         maxResults: 20
     });
-    console.log('historyPages', historyPages);
     const pages: MHistoryPage[] = [];
-    for (const item of historyPages) {
-        pages.push({
-            id: item.id,
-            title: item.title,
-            url: item.url,
-            lastVisitDateTime: item.lastVisitTime
-        });
+    for (const device of devices) {
+        const page: MHistoryPage = {
+            id: device.tab?.sessionId,
+            title: device.tab?.title,
+            url: device.tab?.url,
+            lastVisitDateTime: device.lastModified
+        };
+        pages.push(page);
     }
+
     browser.runtime.sendMessage({
         type: 'history',
         data: pages
