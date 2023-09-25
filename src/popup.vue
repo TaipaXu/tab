@@ -1,5 +1,5 @@
 <template>
-    <template v-if="!searchMode">
+    <template v-if="mode === Mode.Tab">
         <v-toolbar density="compact" color="primary">
             <v-toolbar-title class="title" @click="openHomepage">
                 Tab
@@ -27,9 +27,13 @@
             icon="mdi-database-outline"
             @click="openSavePage"></v-btn>
 
-            <v-btn icon @click="enterSearchMode">
-                <v-icon>mdi-magnify</v-icon>
-            </v-btn>
+            <v-btn
+            icon="mdi-history"
+            @click="enterHistoryMode"></v-btn>
+
+            <v-btn
+            icon="mdi-magnify"
+            @click="enterSearchMode"></v-btn>
 
 
             <template #extension>
@@ -85,7 +89,7 @@
         </v-window>
     </template>
 
-    <template v-else>
+    <template v-if="mode === Mode.Search">
         <div class="search-section">
             <v-card
             class="mx-auto search__input"
@@ -144,6 +148,34 @@
             </v-list>
         </div>
     </template>
+
+    <template v-if="mode === Mode.Hisotry">
+        <div class="search-section">
+            <v-toolbar density="compact" color="primary">
+                <v-toolbar-title class="title" @click="openHomepage">
+                    Hisotry
+                </v-toolbar-title>
+
+                <v-spacer></v-spacer>
+
+                <v-btn
+                icon="mdi-close"
+                @click="exitHistoryMode"></v-btn>
+            </v-toolbar>
+
+            <v-list class="search__items">
+                <v-list-item
+                v-for="page in historyPages"
+                :key="page.id"
+                link
+                @click="openPage(page.url)">
+                    <v-list-item-title>
+                        {{ page.title }}
+                    </v-list-item-title>
+                </v-list-item>
+            </v-list>
+        </div>
+    </template>
 </template>
 
 <script setup lang="ts">
@@ -151,8 +183,16 @@ import browser from 'webextension-polyfill';
 import { Ref } from 'vue';
 import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import { Tab as MTab } from '@/models/tab';
+import { Page as MPage } from '@/models/page';
 import { addGroup as DAddGroup } from '@/data/page';
 
+const enum Mode {
+    Tab,
+    Search,
+    Hisotry
+}
+
+const mode: Ref<Mode> = ref(Mode.Tab);
 let inited = false;
 let windowIndex: Ref<number> = ref(0);
 
@@ -178,6 +218,8 @@ browser.runtime.onMessage.addListener(async (message) => {
             inited = true;
             windowIndex.value = index;
         }
+    } else if (message.type === 'history') {
+        historyPages.value = message.data;
     }
 });
 
@@ -224,17 +266,16 @@ const closeWindow = () => {
 };
 
 const $searchInput = ref();
-const searchMode: Ref<boolean> = ref(false);
 const searchText: Ref<string> = ref('');
 const enterSearchMode = () => {
-    searchMode.value = true;
+    mode.value = Mode.Search;
     searchText.value = '';
     nextTick(() => {
         $searchInput.value.focus();
     });
 };
 const exitSearchMode = () => {
-    searchMode.value = false;
+    mode.value = Mode.Tab;
     searchText.value = '';
 };
 const searchedWindowTabs = computed(() => {
@@ -255,6 +296,21 @@ const searchedWindowTabs = computed(() => {
     }
     return windowTabs;
 });
+
+const historyPages: Ref<MPage[]> = ref([]);
+const enterHistoryMode = () => {
+    mode.value = Mode.Hisotry;
+    browser.runtime.sendMessage({
+        type: 'getHistory'
+    });
+};
+const exitHistoryMode = () => {
+    mode.value = Mode.Tab;
+};
+
+const openPage = (url?: string) => {
+    globalThis.open(url);
+};
 
 const openHomepage = () => {
     globalThis.open('https://github.com/TaipaXu/tab');

@@ -1,5 +1,6 @@
 import browser from 'webextension-polyfill';
 import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
+import { Page as MPage } from '@/models/page';
 import { getGroups } from '@/data/page';
 
 const getAllTabs = async () => {
@@ -54,6 +55,26 @@ const getSaves = async () => {
     });
 };
 
+const getHistory = async() => {
+    const historyPages = await browser.history.search({
+        text: '',
+        maxResults: 20
+    });
+    console.log('historyPages', historyPages);
+    const pages: MPage[] = [];
+    for (const item of historyPages) {
+        pages.push({
+            id: item.id,
+            title: item.title,
+            url: item.url
+        });
+    }
+    browser.runtime.sendMessage({
+        type: 'history',
+        data: pages
+    });
+};
+
 browser.runtime.onMessage.addListener(async (message: any, sender: browser.Runtime.MessageSender) => {
     console.log('message', message, sender);
     if (message.type === 'getTabs') {
@@ -69,6 +90,8 @@ browser.runtime.onMessage.addListener(async (message: any, sender: browser.Runti
         browser.windows.remove(message.windowId);
     } else if (message.type === 'getSaves') {
         getSaves();
+    } else if (message.type === 'getHistory') {
+        getHistory();
     }
 });
 
