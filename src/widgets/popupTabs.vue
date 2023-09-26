@@ -95,6 +95,7 @@ import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import { Tab as MTab } from '@/models/tab';
 import { addGroup as DAddGroup } from '@/data/page';
 
+let inited = false;
 const windows: Ref<MBrowsorWindow[]> = ref([]);
 let windowIndex: Ref<number> = ref(0);
 const windowId: Ref<number | undefined> = ref();
@@ -110,7 +111,15 @@ browser.runtime.onMessage.addListener(async (message) => {
     console.log('message', message);
     if (message.type === 'tabs') {
         windows.value = message.data;
+        if (!inited) {
+            inited = true;
 
+            const [tab] = await browser.tabs.query({ currentWindow: true, active: true });
+            const window = windows.value.find((window) => window.id === tab.windowId);
+            if (window) {
+                windowIndex.value = windows.value.indexOf(window);
+            }
+        }
         if (windowIndex.value > windows.value.length - 1) {
             windowIndex.value = windows.value.length - 1;
         }
