@@ -18,7 +18,7 @@
             </v-card-text>
         </v-card>
 
-        <v-list class="search__items">
+        <v-list density="compact" nav class="search__items">
             <template v-for="(browserWindow, index) in searchedWindowTabs" :key="index">
                 <v-list-subheader class="search__window">
                     <div>
@@ -34,25 +34,14 @@
                     @click="showWindowById(browserWindow.id)"></v-btn>
                 </v-list-subheader>
 
-                <v-list-item
+                <tab
                 v-for="tab in browserWindow.tabs"
                 :key="tab.id"
+                :title="tab.title"
+                :icon="tab.favIcon"
                 :active="tabId === tab.id"
-                @click="switchToTab(browserWindow.id, tab.id)">
-                    <template #prepend>
-                        <v-img :src="tab.favIcon" :width="16" />
-                    </template>
-
-                    <v-list-item-title style="margin-left: 12px;">
-                        {{ tab.title }}
-                    </v-list-item-title>
-
-                    <template #append>
-                        <v-icon
-                        icon="mdi-close"
-                        @click="closeTab(tab.id)"></v-icon>
-                    </template>
-                </v-list-item>
+                @click="switchToTab(browserWindow.id, tab.id)"
+                @close="closeTab(tab.id)" />
             </template>
         </v-list>
     </div>
@@ -63,6 +52,7 @@ import browser from 'webextension-polyfill';
 import { Ref } from 'vue';
 import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import { Tab as MTab } from '@/models/tab';
+import Tab from '@/widgets/tab.vue';
 
 const windows: Ref<MBrowsorWindow[]> = ref([]);
 const windowId: Ref<number | undefined> = ref();

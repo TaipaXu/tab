@@ -59,30 +59,15 @@
         v-for="(browserWindow, index) in windows"
         :key="index">
             <v-list :lines="false" density="compact" nav>
-                <v-list-item
+                <tab
                 v-for="tab in browserWindow.tabs"
                 :key="tab.id"
+                :title="tab.title"
+                :icon="tab.favIcon"
                 :active="tabId === tab.id"
-                @click="switchToTab(browserWindow.id, tab.id)">
-                    <template #prepend>
-                        <v-img :src="tab.favIcon" :width="16" />
-                    </template>
-
-                    <v-list-item-title style="margin-left: 12px;">
-                        {{ tab.title }}
-                    </v-list-item-title>
-
-                    <template #append>
-                        <v-icon
-                        icon="mdi-database-plus"
-                        @click.stop="saveAndClosePage(tab)"></v-icon>
-
-                        <v-icon
-                        icon="mdi-close"
-                        style="margin-left: 8px;"
-                        @click.stop="closeTab(tab.id)"></v-icon>
-                    </template>
-                </v-list-item>
+                @click="switchToTab(browserWindow.id, tab.id)"
+                @save-and-close="saveAndClosePage(tab)"
+                @close="closeTab(tab.id)" />
             </v-list>
         </v-window-item>
     </v-window>
@@ -94,6 +79,7 @@ import { Ref } from 'vue';
 import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import { Tab as MTab } from '@/models/tab';
 import { addGroup as DAddGroup } from '@/data/page';
+import Tab from '@/widgets/tab.vue';
 
 let inited = false;
 const windows: Ref<MBrowsorWindow[]> = ref([]);
