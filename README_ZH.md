@@ -4,13 +4,35 @@
 
 [English](./README.md) | 中文
 
-![popup page](./popup.png)
-
-![save page](./save.jpeg)
-
 ## 安装
 
 [Chrome应用商店](https://chrome.google.com/webstore/detail/tab/jjihajofddejmecdigfhddjkondfjkgf?hl=en)
+
+## 使用
+
+### 快速切换浏览器标签页
+
+![switch tab](./switchTab.gif)
+
+### 快速切换浏览器窗口
+
+![switch window](./switchWindow.gif)
+
+### 快速关闭浏览器标签页
+
+![close tab](./closeTab.gif)
+
+### 快速关闭浏览器窗口
+
+![close window](./closeWindow.gif)
+
+### 快速保存浏览器标签页
+
+![save tab](./saveTab.gif)
+
+### 快速保存浏览器窗口
+
+![save window](./saveWindow.gif)
 
 ## 开发与构建
 

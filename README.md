@@ -4,13 +4,33 @@ To make it easier for you to manage browser tab pages.
 
 English | [中文](./README_ZH.md)
 
-![popup page](./popup.png)
-
-![save page](./save.jpeg)
-
 ## Installion
 
 [Chrome Web Store](https://chrome.google.com/webstore/detail/tab/jjihajofddejmecdigfhddjkondfjkgf?hl=en)
+
+## Usage
+
+### Quickly Switch Browser Tabs
+
+![switch tab](./switchTab.gif)
+
+### Quickly Switch Browser Windows
+
+![switch window](./switchWindow.gif)
+
+### Quickly Close Browser Tabs
+
+![close tab](./closeTab.gif)
+
+### Quickly Close Browser Windows
+
+![close window](./closeWindow.gif)
+
+### Quickly Save Browser Tabs
+
+![save tab](./saveTab.gif)
+
+### Quickly Save Browser Windows
 
 ## Development & Building
 
