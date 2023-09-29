@@ -65,7 +65,7 @@ const getHistory = async() => {
             id: device.tab?.sessionId,
             title: device.tab?.title,
             url: device.tab?.url,
-            lastVisitDateTime: device.lastModified
+            lastVisitDateTime: device.lastModified * 1000
         };
         pages.push(page);
     }
