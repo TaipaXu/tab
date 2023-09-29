@@ -32,6 +32,12 @@ English | [中文](./README_ZH.md)
 
 ### Quickly Save Browser Windows
 
+![save window](./saveWindow.gif)
+
+### View Recently Closed Pages
+
+![history](./history.gif)
+
 ## Development & Building
 
 ### Prerequisites

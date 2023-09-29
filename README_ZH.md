@@ -34,6 +34,10 @@
 
 ![save window](./saveWindow.gif)
 
+### 查看最近关闭的页面
+
+![history](./history.gif)
+
 ## 开发与构建
 
 ### 准备
