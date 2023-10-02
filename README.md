@@ -6,7 +6,9 @@ English | [中文](./README_ZH.md)
 
 ## Installion
 
-[Chrome Web Store](https://chrome.google.com/webstore/detail/tab/jjihajofddejmecdigfhddjkondfjkgf?hl=en)
+[Chrome Web Store](https://chrome.google.com/webstore/detail/tab/jjihajofddejmecdigfhddjkondfjkgf)
+
+[Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/tab/cjgpidanmhajlibcajahfjeenpdokicg)
 
 ## Usage
 

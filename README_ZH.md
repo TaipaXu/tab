@@ -6,7 +6,9 @@
 
 ## 安装
 
-[Chrome应用商店](https://chrome.google.com/webstore/detail/tab/jjihajofddejmecdigfhddjkondfjkgf?hl=en)
+[Chrome应用商店](https://chrome.google.com/webstore/detail/tab/jjihajofddejmecdigfhddjkondfjkgf)
+
+[Edge插件商店](https://microsoftedge.microsoft.com/addons/detail/tab/cjgpidanmhajlibcajahfjeenpdokicg)
 
 ## 使用
 
