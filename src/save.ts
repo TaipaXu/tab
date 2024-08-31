@@ -1,8 +1,12 @@
 import App from './save.vue';
 import { createVuetify } from 'vuetify';
 import 'vuetify/styles';
-import colors from 'vuetify/lib/util/colors';
-import '@mdi/font/css/materialdesignicons.css';
+import colors from 'vuetify/lib/util/colors.mjs';
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
+import {
+    mdiWeb,
+    mdiClose
+} from '@mdi/js';
 import { getSystemTheme } from '@/utils/theme';
 
 const vuetify = createVuetify({
@@ -21,6 +25,17 @@ const vuetify = createVuetify({
                     secondary: colors.red.lighten4
                 }
             }
+        }
+    },
+    icons: {
+        defaultSet: 'mdi',
+        aliases: {
+            ...aliases,
+            web: mdiWeb,
+            close: mdiClose
+        },
+        sets: {
+            mdi
         }
     }
 });

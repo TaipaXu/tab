@@ -12,11 +12,11 @@
         <template #append>
             <v-icon
             v-if="instance?.vnode.props?.onSaveAndClose !== undefined"
-            icon="mdi-database-plus"
+            icon="$databasePlus"
             @click.stop="$emit('saveAndClose')"></v-icon>
 
             <v-icon
-            icon="mdi-close"
+            icon="$close"
             style="margin-left: 8px;"
             @click.stop="$emit('close')"></v-icon>
         </template>

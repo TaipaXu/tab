@@ -2,7 +2,18 @@ import App from './popup.vue';
 import { createVuetify } from 'vuetify';
 import 'vuetify/styles';
 import colors from 'vuetify/lib/util/colors.mjs';
-import '@mdi/font/css/materialdesignicons.css';
+import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
+import {
+    mdiEyeOutline,
+    mdiDeleteOutline,
+    mdiDatabasePlus,
+    mdiDatabaseOutline,
+    mdiHistory,
+    mdiMagnify,
+    mdiArrowRightBoldBoxOutline,
+    mdiArrowLeftBoldBoxOutline,
+    mdiClose
+} from '@mdi/js';
 import { getSystemTheme } from '@/utils/theme';
 
 const vuetify = createVuetify({
@@ -21,6 +32,24 @@ const vuetify = createVuetify({
                     secondary: colors.red.lighten4
                 }
             }
+        }
+    },
+    icons: {
+        defaultSet: 'mdi',
+        aliases: {
+            ...aliases,
+            eyeOutline: mdiEyeOutline,
+            deleteOutline: mdiDeleteOutline,
+            databasePlus: mdiDatabasePlus,
+            databaseOutline: mdiDatabaseOutline,
+            history: mdiHistory,
+            magnify: mdiMagnify,
+            arrowRightBoldBoxOutline: mdiArrowRightBoldBoxOutline,
+            arrowLeftBoldBoxOutline: mdiArrowLeftBoldBoxOutline,
+            close: mdiClose
+        },
+        sets: {
+            mdi
         }
     }
 });

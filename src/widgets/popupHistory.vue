@@ -8,7 +8,7 @@
             <v-spacer></v-spacer>
 
             <v-btn
-            icon="mdi-close"
+            icon="$close"
             @click="$emits('exitHistoryMode')"></v-btn>
         </v-toolbar>
 

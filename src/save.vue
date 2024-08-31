@@ -17,14 +17,14 @@
                     {{ group.pages.length }} page{{ group.pages.length === 1 ? '' : 's' }}
 
                     <v-btn
-                    icon="mdi-web"
+                    icon="$web"
                     variant="text"
                     density="compact"
                     style="margin-left: 10px;"
                     @click="openGroup(group)"></v-btn>
 
                     <v-btn
-                    icon="mdi-close"
+                    icon="$close"
                     variant="text"
                     density="compact"
                     style="margin-left: 10px;"
@@ -46,7 +46,7 @@
 
                     <template #append>
                         <v-icon
-                        icon="mdi-close"
+                        icon="$close"
                         @click.stop="removePage(group, page)"></v-icon>
                     </template>
                 </v-list-item>

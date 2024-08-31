@@ -11,7 +11,7 @@
                 density="compact"
                 variant="solo"
                 label="Search tabs"
-                append-inner-icon="mdi-close"
+                append-inner-icon="$close"
                 single-line
                 hide-details
                 autofocus
@@ -29,7 +29,7 @@
 
                     <v-btn
                     v-show="browserWindow.id !== windowId"
-                    icon="mdi-eye-outline"
+                    icon="$eyeOutline"
                     variant="text"
                     density="compact"
                     @click="showWindowById(browserWindow.id)"></v-btn>

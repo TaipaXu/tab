@@ -11,35 +11,35 @@
 
         <v-btn
         v-show="windows[windowIndex].id !== windowId"
-        icon="mdi-eye-outline"
+        icon="$eyeOutline"
         @click="showWindow"></v-btn>
 
         <v-btn
-        icon="mdi-delete-outline"
+        icon="$deleteOutline"
         @click="closeWindow"></v-btn>
 
         <v-btn
-        icon="mdi-database-plus"
+        icon="$databasePlus"
         @click="saveAndCloseWindow"></v-btn>
 
         <v-btn
-        icon="mdi-database-outline"
+        icon="$databaseOutline"
         @click="openSavePage"></v-btn>
 
         <v-btn
-        icon="mdi-history"
+        icon="$history"
         @click="$emits('enterHistoryMode')"></v-btn>
 
         <v-btn
-        icon="mdi-magnify"
+        icon="$magnify"
         @click="$emits('enterSearchMode')"></v-btn>
 
 
         <template #extension>
             <v-tabs
             v-model="windowIndex"
-            next-icon="mdi-arrow-right-bold-box-outline"
-            prev-icon="mdi-arrow-left-bold-box-outline"
+            next-icon="$arrowRightBoldBoxOutline"
+            prev-icon="$arrowLeftBoldBoxOutline"
             bg-color="grey-lighten-3"
             density="compact"
             align-tabs="center"
@@ -75,7 +75,6 @@
 
 <script setup lang="ts">
 import browser from 'webextension-polyfill';
-import { Ref } from 'vue';
 import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import { Tab as MTab } from '@/models/tab';
 import { addGroup as DAddGroup } from '@/data/page';
