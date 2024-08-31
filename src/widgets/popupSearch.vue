@@ -14,6 +14,7 @@
                 append-inner-icon="mdi-close"
                 single-line
                 hide-details
+                autofocus
                 @click:append-inner="$emits('exitSearchMode')"></v-text-field>
             </v-card-text>
         </v-card>
