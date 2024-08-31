@@ -8,7 +8,7 @@ English | [中文](./README_ZH.md)
 
 [Chrome Web Store](https://chrome.google.com/webstore/detail/tab/jjihajofddejmecdigfhddjkondfjkgf)
 
-[Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/tab/cjgpidanmhajlibcajahfjeenpdokicg)
+[Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/tab/lppkpnfehnnoafamddghlofdchbacomh)
 
 ## Usage
 

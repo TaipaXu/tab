@@ -8,7 +8,7 @@
 
 [Chrome应用商店](https://chrome.google.com/webstore/detail/tab/jjihajofddejmecdigfhddjkondfjkgf)
 
-[Edge插件商店](https://microsoftedge.microsoft.com/addons/detail/tab/cjgpidanmhajlibcajahfjeenpdokicg)
+[Edge插件商店](https://microsoftedge.microsoft.com/addons/detail/tab/lppkpnfehnnoafamddghlofdchbacomh)
 
 ## 使用
 
