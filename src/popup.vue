@@ -36,7 +36,7 @@ const openHomepage = () => {
 
 <style lang="scss">
 #app {
-    width: 400px;
+    width: 420px;
     height: 600px;
     display: flex;
     flex-direction: column;
