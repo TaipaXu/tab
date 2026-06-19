@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { Ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import PopupTabs from '@/widgets/popupTabs.vue';
 import PopupSearch from '@/widgets/popupSearch.vue';
 import PopupHistory from '@/widgets/popupHistory.vue';

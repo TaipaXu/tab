@@ -32,8 +32,8 @@
 
 <script setup lang="ts">
 import browser from 'webextension-polyfill';
-import { Ref } from 'vue';
-import { HistoryPage as MHistoryPage } from '@/models/historyPage';
+import { ref, type Ref } from 'vue';
+import type { HistoryPage as MHistoryPage } from '@/models/historyPage';
 import { formatTimestamp } from '@/utils/datetime';
 
 const historyPages: Ref<MHistoryPage[]> = ref([]);

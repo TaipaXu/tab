@@ -14,8 +14,8 @@ class BrowserSyncStorage extends AbstractStorage {
         return data[key];
     }
 
-    set(data: object) {
-        browser.storage.sync.set(data);
+    set(data: object): Promise<void> {
+        return browser.storage.sync.set(data);
     }
 }
 

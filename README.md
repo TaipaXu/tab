@@ -40,27 +40,69 @@ English | [中文](./README_ZH.md)
 
 ![history](./history.gif)
 
-## Development & Building
+## Tech Stack
 
-### Prerequisites
+- [Vite+](https://viteplus.dev/guide/) as the unified web toolchain and `vp` CLI.
+- [Vue](https://vuejs.org/) for the extension UI.
+- [Vuetify](https://vuetifyjs.com/) for UI components.
+- [TypeScript](https://www.typescriptlang.org/) for typed application code.
 
-```bash
-git clone https://github.com/TaipaXu/tab.git
-cd tab
-pnpm i
-```
+## Runtime
 
-### Development
+- Node.js: `24.17.0`
+- Package manager: `pnpm@11.5.2`
+- Vite+ reads these settings from `package.json`.
 
-```bash
-pnpm run dev
-```
-
-### Build
+First-time runtime setup:
 
 ```bash
-pnpm run build
+vp env setup
+vp env on
+vp env install
 ```
+
+## Development
+
+Install dependencies:
+
+```bash
+vp install
+```
+
+Build in watch mode for extension development:
+
+```bash
+vp dev
+```
+
+The unpacked extension output is written to `dist/`.
+
+## Build
+
+Run the project build script through Vite+. This runs Vue type checking and the Vite+ production build in parallel:
+
+```bash
+vp run build
+```
+
+Use `vp build` only when you want to run the built-in Vite+ production build directly without the project script.
+
+The production build outputs the Chrome extension files:
+
+```text
+dist/manifest.json
+dist/popup.html
+dist/save.html
+dist/service.js
+```
+
+## Validation
+
+```bash
+vp check
+```
+
+Run `vp help` to see the full list of Vite+ commands, or `vp <command> --help` for command-specific help.
 
 ## License
 

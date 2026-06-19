@@ -1,63 +1,79 @@
 import browser from 'webextension-polyfill';
-import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
-import { HistoryPage as MHistoryPage } from '@/models/historyPage';
+import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
+import type { HistoryPage as MHistoryPage } from '@/models/historyPage';
 import { getGroups } from '@/data/page';
+
+interface RuntimeMessage {
+    type: string;
+    tabId?: number;
+    windowId?: number;
+}
+
+const isRuntimeMessage = (message: unknown): message is RuntimeMessage => {
+    if (typeof message !== 'object' || message === null || !('type' in message)) {
+        return false;
+    }
+
+    return typeof (message as { type?: unknown }).type === 'string';
+};
 
 const getAllTabs = async () => {
     const tabs = await browser.tabs.query({});
     console.log('tabs', tabs);
     const windows: MBrowsorWindow[] = [];
     for (const tab of tabs) {
-        const window = windows.find(w => w.id === tab.windowId);
+        const window = windows.find((w) => w.id === tab.windowId);
         if (window) {
             window.tabs.push({
                 id: tab.id,
                 title: tab.title,
                 favIcon: tab.favIconUrl,
-                url: tab.url
+                url: tab.url,
             });
         } else {
             windows.push({
                 id: tab.windowId,
-                tabs: [{
-                    id: tab.id,
-                    title: tab.title,
-                    favIcon: tab.favIconUrl,
-                    url: tab.url
-                }]
+                tabs: [
+                    {
+                        id: tab.id,
+                        title: tab.title,
+                        favIcon: tab.favIconUrl,
+                        url: tab.url,
+                    },
+                ],
             });
         }
     }
     console.log('windows', windows);
 
-    browser.runtime.sendMessage({
+    await browser.runtime.sendMessage({
         type: 'tabs',
-        data: windows
+        data: windows,
     });
 };
 
 const getTabCount = async () => {
     const tabs = await browser.tabs.query({});
     const count = tabs.length;
-    browser.action.setBadgeText({
-        text: count.toString()
+    await browser.action.setBadgeText({
+        text: count.toString(),
     });
 };
 
-getTabCount();
+void getTabCount();
 
 const getSaves = async () => {
     const groups = await getGroups();
     console.log('groups', groups);
-    browser.runtime.sendMessage({
+    await browser.runtime.sendMessage({
         type: 'saves',
-        data: groups
+        data: groups,
     });
 };
 
-const getHistory = async() => {
+const getHistory = async () => {
     const devices: browser.Sessions.Session[] = await browser.sessions.getRecentlyClosed({
-        maxResults: 20
+        maxResults: 20,
     });
     const pages: MHistoryPage[] = [];
     for (const device of devices) {
@@ -65,46 +81,56 @@ const getHistory = async() => {
             id: device.tab?.sessionId,
             title: device.tab?.title,
             url: device.tab?.url,
-            lastVisitDateTime: device.lastModified * 1000
+            lastVisitDateTime: device.lastModified * 1000,
         };
         pages.push(page);
     }
 
-    browser.runtime.sendMessage({
+    await browser.runtime.sendMessage({
         type: 'history',
-        data: pages
+        data: pages,
     });
 };
 
-browser.runtime.onMessage.addListener(async (message: any, sender: browser.Runtime.MessageSender) => {
-    console.log('message', message, sender);
-    if (message.type === 'getTabs') {
-        getAllTabs();
-    } else if (message.type === 'closeTab') {
-        browser.tabs.remove(message.tabId);
-    } else if (message.type === 'switchToTab') {
-        await browser.windows.update(message.windowId, { focused: true });
-        browser.tabs.update(message.tabId, { active: true });
-    } else if (message.type === 'showWindow') {
-        browser.windows.update(message.windowId, { focused: true });
-    } else if (message.type === 'closeWindow') {
-        browser.windows.remove(message.windowId);
-    } else if (message.type === 'getSaves') {
-        getSaves();
-    } else if (message.type === 'getHistory') {
-        getHistory();
-    }
-});
+browser.runtime.onMessage.addListener(
+    async (message: unknown, sender: browser.Runtime.MessageSender) => {
+        console.log('message', message, sender);
+        if (!isRuntimeMessage(message)) {
+            return;
+        }
+
+        if (message.type === 'getTabs') {
+            await getAllTabs();
+        } else if (message.type === 'closeTab' && message.tabId !== undefined) {
+            await browser.tabs.remove(message.tabId);
+        } else if (
+            message.type === 'switchToTab' &&
+            message.windowId !== undefined &&
+            message.tabId !== undefined
+        ) {
+            await browser.windows.update(message.windowId, { focused: true });
+            await browser.tabs.update(message.tabId, { active: true });
+        } else if (message.type === 'showWindow' && message.windowId !== undefined) {
+            await browser.windows.update(message.windowId, { focused: true });
+        } else if (message.type === 'closeWindow' && message.windowId !== undefined) {
+            await browser.windows.remove(message.windowId);
+        } else if (message.type === 'getSaves') {
+            await getSaves();
+        } else if (message.type === 'getHistory') {
+            await getHistory();
+        }
+    },
+);
 
 browser.tabs.onCreated.addListener(() => {
     console.log('tabs.onCreated');
-    getTabCount();
+    void getTabCount();
 });
 
 browser.tabs.onRemoved.addListener(() => {
     console.log('tabs.onRemoved');
-    getAllTabs();
-    getTabCount();
+    void getAllTabs();
+    void getTabCount();
 });
 
 browser.tabs.onUpdated.addListener(() => {
@@ -119,4 +145,4 @@ const getAllWindows = async () => {
     const windows = await browser.windows.getAll({});
     console.log('windows', windows);
 };
-getAllWindows();
+void getAllWindows();

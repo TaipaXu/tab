@@ -1,6 +1,6 @@
-import { Tab } from './tab';
+import type { Tab } from './tab';
 
 export interface BrowsorWindow {
-    id?: number,
-    tabs: Tab[],
+    id?: number;
+    tabs: Tab[];
 }

@@ -57,14 +57,14 @@
 
 <script setup lang="ts">
 import browser from 'webextension-polyfill';
-import { Ref } from 'vue';
+import { ref, type Ref } from 'vue';
 import {
     getGroups as DGetGroups,
     removeGroup as DRemoveGroup,
     removePage as DRemovePage
 } from '@/data/page';
-import { Group as MGroup } from '@/models/group';
-import { Page as MPage } from '@/models/page';
+import type { Group as MGroup } from '@/models/group';
+import type { Page as MPage } from '@/models/page';
 
 const groups: Ref<MGroup[]> = ref([]);
 

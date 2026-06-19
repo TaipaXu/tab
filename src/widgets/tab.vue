@@ -24,6 +24,8 @@
 </template>
 
 <script setup lang="ts">
+import { getCurrentInstance } from 'vue';
+
 defineProps({
     title: {
         type: String

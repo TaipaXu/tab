@@ -1,4 +1,4 @@
-export const  formatTimestamp = (timestamp: number): string => {
+export const formatTimestamp = (timestamp: number): string => {
     const date = new Date(timestamp);
 
     const year = date.getFullYear();

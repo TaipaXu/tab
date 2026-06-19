@@ -1,6 +1,6 @@
 import { local } from '@/storage';
-import { Group as MGroup } from '@/models/group';
-import { Page as MPage } from '@/models/page';
+import type { Group as MGroup } from '@/models/group';
+import type { Page as MPage } from '@/models/page';
 
 export const getGroups = async (): Promise<MGroup[]> => {
     const groups = await local.get<MGroup[]>('groups', []);
@@ -19,7 +19,7 @@ export const addGroup = async (group: MGroup) => {
 
 export const removeGroup = async (group: MGroup) => {
     const groups = await getGroups();
-    const index = groups.findIndex(g => g.id === group.id);
+    const index = groups.findIndex((g) => g.id === group.id);
     if (index !== -1) {
         groups.splice(index, 1);
     }
@@ -28,14 +28,18 @@ export const removeGroup = async (group: MGroup) => {
 
 export const removePage = async (group: MGroup, page: MPage) => {
     const groups = await getGroups();
-    const index = groups.findIndex(g => g.id === group.id);
+    const index = groups.findIndex((g) => g.id === group.id);
     if (index !== -1) {
-        const group = groups[index];
-        const pageIndex = group.pages.findIndex(p => p.id === page.id);
-        if (pageIndex !== -1) {
-            group.pages.splice(pageIndex, 1);
+        const targetGroup = groups[index];
+        if (!targetGroup) {
+            return;
         }
-        if (group.pages.length === 0) {
+
+        const pageIndex = targetGroup.pages.findIndex((p) => p.id === page.id);
+        if (pageIndex !== -1) {
+            targetGroup.pages.splice(pageIndex, 1);
+        }
+        if (targetGroup.pages.length === 0) {
             groups.splice(index, 1);
         }
     }

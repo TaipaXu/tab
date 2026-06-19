@@ -1,11 +1,7 @@
 abstract class AbstractStorage {
-    get<T>(key: string, defaultValue: T | undefined): Promise<T | undefined> {
-        throw new Error('Not implemented');
-    }
+    abstract get<T>(key: string, defaultValue: T | undefined): Promise<T | undefined>;
 
-    set(data: object) {
-        throw new Error('Not implemented');
-    }
+    abstract set(data: object): Promise<void>;
 }
 
 export default AbstractStorage;

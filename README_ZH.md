@@ -40,27 +40,69 @@
 
 ![history](./history.gif)
 
-## 开发与构建
+## 技术栈
 
-### 准备
+- [Vite+](https://viteplus.dev/guide/) 作为统一 Web 工具链和 `vp` CLI。
+- [Vue](https://vuejs.org/) 用于扩展界面。
+- [Vuetify](https://vuetifyjs.com/) 用于 UI 组件。
+- [TypeScript](https://www.typescriptlang.org/) 用于类型化应用代码。
 
-```bash
-git clone https://github.com/TaipaXu/tab.git
-cd tab
-pnpm i
-```
+## 运行环境
 
-### 开发
+- Node.js：`24.17.0`
+- 包管理器：`pnpm@11.5.2`
+- Vite+ 会从 `package.json` 读取这些设置。
 
-```bash
-pnpm run dev
-```
-
-### 构建
+首次运行时设置：
 
 ```bash
-pnpm run build
+vp env setup
+vp env on
+vp env install
 ```
+
+## 开发
+
+安装依赖：
+
+```bash
+vp install
+```
+
+以 watch 模式构建，供扩展开发使用：
+
+```bash
+vp dev
+```
+
+未打包扩展输出在 `dist/` 目录。
+
+## 打包
+
+通过 Vite+ 运行项目构建脚本。该命令会并行执行 Vue 类型检查和 Vite+ 生产构建：
+
+```bash
+vp run build
+```
+
+只有在需要直接运行 Vite+ 内置生产构建、跳过项目构建脚本时，才使用 `vp build`。
+
+生产构建会输出 Chrome 扩展文件：
+
+```text
+dist/manifest.json
+dist/popup.html
+dist/save.html
+dist/service.js
+```
+
+## 校验
+
+```bash
+vp check
+```
+
+也可以运行 `vp help` 查看 Vite+ 提供的完整命令列表，或运行 `vp <command> --help` 查看单个命令的帮助。
 
 ## 协议
 

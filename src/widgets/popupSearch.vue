@@ -50,9 +50,9 @@
 
 <script setup lang="ts">
 import browser from 'webextension-polyfill';
-import { Ref } from 'vue';
-import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
-import { Tab as MTab } from '@/models/tab';
+import { computed, onMounted, ref, type Ref } from 'vue';
+import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
+import type { Tab as MTab } from '@/models/tab';
 import Tab from '@/widgets/tab.vue';
 
 const windows: Ref<MBrowsorWindow[]> = ref([]);
@@ -63,6 +63,10 @@ const searchText: Ref<string> = ref('');
 
 onMounted(async () => {
     const [tab] = await browser.tabs.query({ currentWindow: true, active: true });
+    if (!tab) {
+        return;
+    }
+
     windowId.value = tab.windowId;
     tabId.value = tab.id;
 });

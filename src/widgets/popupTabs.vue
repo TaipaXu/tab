@@ -10,7 +10,7 @@
         <v-spacer></v-spacer>
 
         <v-btn
-        v-show="windows[windowIndex].id !== windowId"
+        v-show="windows[windowIndex]?.id !== windowId"
         icon="$eyeOutline"
         @click="showWindow"></v-btn>
 
@@ -75,18 +75,23 @@
 
 <script setup lang="ts">
 import browser from 'webextension-polyfill';
-import { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
-import { Tab as MTab } from '@/models/tab';
+import { onMounted, ref, type Ref } from 'vue';
+import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
+import type { Tab as MTab } from '@/models/tab';
 import { addGroup as DAddGroup } from '@/data/page';
 import Tab from '@/widgets/tab.vue';
 
 let inited = false;
 const windows: Ref<MBrowsorWindow[]> = ref([]);
-let windowIndex: Ref<number> = ref(0);
+const windowIndex: Ref<number> = ref(0);
 const windowId: Ref<number | undefined> = ref();
 const tabId: Ref<number | undefined> = ref();
 onMounted(async () => {
     const [tab] = await browser.tabs.query({ currentWindow: true, active: true });
+    if (!tab) {
+        return;
+    }
+
     windowId.value = tab.windowId;
     tabId.value = tab.id;
     console.log('id', tab.id);
@@ -100,6 +105,10 @@ browser.runtime.onMessage.addListener(async (message) => {
             inited = true;
 
             const [tab] = await browser.tabs.query({ currentWindow: true, active: true });
+            if (!tab) {
+                return;
+            }
+
             const window = windows.value.find((window) => window.id === tab.windowId);
             if (window) {
                 windowIndex.value = windows.value.indexOf(window);
@@ -116,7 +125,12 @@ browser.runtime.sendMessage({
 });
 
 const showWindow = () => {
-    const windowId = windows.value[windowIndex.value].id;
+    const activeWindow = windows.value[windowIndex.value];
+    if (!activeWindow) {
+        return;
+    }
+
+    const windowId = activeWindow.id;
     browser.runtime.sendMessage({
         type: 'showWindow',
         windowId
@@ -124,7 +138,12 @@ const showWindow = () => {
 };
 
 const closeWindow = () => {
-    const windowId = windows.value[windowIndex.value].id;
+    const activeWindow = windows.value[windowIndex.value];
+    if (!activeWindow) {
+        return;
+    }
+
+    const windowId = activeWindow.id;
     browser.runtime.sendMessage({
         type: 'closeWindow',
         windowId
@@ -132,7 +151,12 @@ const closeWindow = () => {
 };
 
 const saveAndCloseWindow = () => {
-    const tabs = windows.value[windowIndex.value].tabs;
+    const activeWindow = windows.value[windowIndex.value];
+    if (!activeWindow) {
+        return;
+    }
+
+    const tabs = activeWindow.tabs;
     DAddGroup({
         id: crypto.randomUUID(),
         pages: tabs.map((tab) => ({

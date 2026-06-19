@@ -1,6 +1,6 @@
-import { Page } from './page';
+import type { Page } from './page';
 
 export interface Group {
-    id: string,
-    pages: Page[],
+    id: string;
+    pages: Page[];
 }

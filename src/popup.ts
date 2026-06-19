@@ -1,4 +1,5 @@
 import App from './popup.vue';
+import { createApp } from 'vue';
 import { createVuetify } from 'vuetify';
 import 'vuetify/styles';
 import colors from 'vuetify/lib/util/colors.mjs';
@@ -12,7 +13,7 @@ import {
     mdiMagnify,
     mdiArrowRightBoldBoxOutline,
     mdiArrowLeftBoldBoxOutline,
-    mdiClose
+    mdiClose,
 } from '@mdi/js';
 import { getSystemTheme } from '@/utils/theme';
 
@@ -23,16 +24,16 @@ const vuetify = createVuetify({
             light: {
                 colors: {
                     primary: colors.red.base,
-                    secondary: colors.red.lighten4
-                }
+                    secondary: colors.red.lighten4,
+                },
             },
             dark: {
                 colors: {
                     primary: colors.red.darken4,
-                    secondary: colors.red.lighten4
-                }
-            }
-        }
+                    secondary: colors.red.lighten4,
+                },
+            },
+        },
     },
     icons: {
         defaultSet: 'mdi',
@@ -46,12 +47,12 @@ const vuetify = createVuetify({
             magnify: mdiMagnify,
             arrowRightBoldBoxOutline: mdiArrowRightBoldBoxOutline,
             arrowLeftBoldBoxOutline: mdiArrowLeftBoldBoxOutline,
-            close: mdiClose
+            close: mdiClose,
         },
         sets: {
-            mdi
-        }
-    }
+            mdi,
+        },
+    },
 });
 
 const app = createApp(App);
