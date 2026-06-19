@@ -23,5 +23,5 @@
         "type": "module",
         "service_worker": "service.js"
     },
-    "permissions": ["tabs", "activeTab", "sessions", "storage"]
+    "permissions": ["tabs", "sessions", "storage"]
 }
