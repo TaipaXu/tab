@@ -7,30 +7,30 @@ import { isRuntimeMessage, sendRuntimeMessage } from '@/utils/runtimeMessage';
 const getAllTabs = async () => {
     const tabs = await browser.tabs.query({});
     console.log('tabs', tabs);
-    const windows: MBrowsorWindow[] = [];
+    const windowsById = new Map<number, MBrowsorWindow>();
     for (const tab of tabs) {
-        const window = windows.find((w) => w.id === tab.windowId);
-        if (window) {
-            window.tabs.push({
-                id: tab.id,
-                title: tab.title,
-                favIcon: tab.favIconUrl,
-                url: tab.url,
-            });
-        } else {
-            windows.push({
-                id: tab.windowId,
-                tabs: [
-                    {
-                        id: tab.id,
-                        title: tab.title,
-                        favIcon: tab.favIconUrl,
-                        url: tab.url,
-                    },
-                ],
-            });
+        const { windowId } = tab;
+        if (windowId === undefined) {
+            continue;
         }
+
+        let window = windowsById.get(windowId);
+        if (!window) {
+            window = {
+                id: windowId,
+                tabs: [],
+            };
+            windowsById.set(windowId, window);
+        }
+
+        window.tabs.push({
+            id: tab.id,
+            title: tab.title,
+            favIcon: tab.favIconUrl,
+            url: tab.url,
+        });
     }
+    const windows = Array.from(windowsById.values());
     console.log('windows', windows);
 
     await sendRuntimeMessage({
