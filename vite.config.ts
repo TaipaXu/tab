@@ -106,6 +106,19 @@ export default defineConfig({
     },
     plugins: [vue(), vueDevTools(), vuetify(), chromeExtensionAssets()],
     build: {
+        minify: 'terser',
+        terserOptions: {
+            compress: {
+                drop_debugger: true,
+                pure_funcs: [
+                    'console.log',
+                    'console.info',
+                    'console.debug',
+                    'console.trace',
+                    'console.table',
+                ],
+            },
+        },
         rollupOptions: {
             input: {
                 popup: resolveProject('popup.html'),
