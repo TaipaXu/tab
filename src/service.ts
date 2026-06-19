@@ -2,7 +2,7 @@ import browser from 'webextension-polyfill';
 import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import type { HistoryPage as MHistoryPage } from '@/models/historyPage';
 import { getGroups } from '@/data/page';
-import { isRuntimeMessage } from '@/utils/runtimeMessage';
+import { isRuntimeMessage, sendRuntimeMessage } from '@/utils/runtimeMessage';
 
 const getAllTabs = async () => {
     const tabs = await browser.tabs.query({});
@@ -33,7 +33,7 @@ const getAllTabs = async () => {
     }
     console.log('windows', windows);
 
-    await browser.runtime.sendMessage({
+    await sendRuntimeMessage({
         type: 'tabs',
         data: windows,
     });
@@ -52,7 +52,7 @@ void getTabCount();
 const getSaves = async () => {
     const groups = await getGroups();
     console.log('groups', groups);
-    await browser.runtime.sendMessage({
+    await sendRuntimeMessage({
         type: 'saves',
         data: groups,
     });
@@ -73,7 +73,7 @@ const getHistory = async () => {
         pages.push(page);
     }
 
-    await browser.runtime.sendMessage({
+    await sendRuntimeMessage({
         type: 'history',
         data: pages,
     });
@@ -86,25 +86,29 @@ browser.runtime.onMessage.addListener(
             return;
         }
 
-        if (message.type === 'getTabs') {
-            await getAllTabs();
-        } else if (message.type === 'closeTab' && message.tabId !== undefined) {
-            await browser.tabs.remove(message.tabId);
-        } else if (
-            message.type === 'switchToTab' &&
-            message.windowId !== undefined &&
-            message.tabId !== undefined
-        ) {
-            await browser.windows.update(message.windowId, { focused: true });
-            await browser.tabs.update(message.tabId, { active: true });
-        } else if (message.type === 'showWindow' && message.windowId !== undefined) {
-            await browser.windows.update(message.windowId, { focused: true });
-        } else if (message.type === 'closeWindow' && message.windowId !== undefined) {
-            await browser.windows.remove(message.windowId);
-        } else if (message.type === 'getSaves') {
-            await getSaves();
-        } else if (message.type === 'getHistory') {
-            await getHistory();
+        switch (message.type) {
+            case 'getTabs':
+                await getAllTabs();
+                break;
+            case 'closeTab':
+                await browser.tabs.remove(message.tabId);
+                break;
+            case 'switchToTab':
+                await browser.windows.update(message.windowId, { focused: true });
+                await browser.tabs.update(message.tabId, { active: true });
+                break;
+            case 'showWindow':
+                await browser.windows.update(message.windowId, { focused: true });
+                break;
+            case 'closeWindow':
+                await browser.windows.remove(message.windowId);
+                break;
+            case 'getSaves':
+                await getSaves();
+                break;
+            case 'getHistory':
+                await getHistory();
+                break;
         }
     },
 );

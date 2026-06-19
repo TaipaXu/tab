@@ -79,7 +79,7 @@ import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import type { Tab as MTab } from '@/models/tab';
 import { addGroup as DAddGroup } from '@/data/page';
-import { isRuntimeMessage } from '@/utils/runtimeMessage';
+import { isRuntimeMessage, sendRuntimeMessage } from '@/utils/runtimeMessage';
 import Tab from '@/widgets/tab.vue';
 
 let inited = false;
@@ -93,8 +93,8 @@ const handleRuntimeMessage = async (message: unknown) => {
         return;
     }
 
-    if (message.type === 'tabs' && Array.isArray(message.data)) {
-        windows.value = message.data as MBrowsorWindow[];
+    if (message.type === 'tabs') {
+        windows.value = message.data;
         if (!inited) {
             inited = true;
 
@@ -116,8 +116,8 @@ const handleRuntimeMessage = async (message: unknown) => {
 
 onMounted(async () => {
     browser.runtime.onMessage.addListener(handleRuntimeMessage);
-    browser.runtime.sendMessage({
-        type: 'getTabs'
+    void sendRuntimeMessage({
+        type: 'getTabs',
     });
 
     const [tab] = await browser.tabs.query({ currentWindow: true, active: true });
@@ -136,27 +136,25 @@ onUnmounted(() => {
 
 const showWindow = () => {
     const activeWindow = windows.value[windowIndex.value];
-    if (!activeWindow) {
+    if (activeWindow?.id === undefined) {
         return;
     }
 
-    const windowId = activeWindow.id;
-    browser.runtime.sendMessage({
+    void sendRuntimeMessage({
         type: 'showWindow',
-        windowId
+        windowId: activeWindow.id,
     });
 };
 
 const closeWindow = () => {
     const activeWindow = windows.value[windowIndex.value];
-    if (!activeWindow) {
+    if (activeWindow?.id === undefined) {
         return;
     }
 
-    const windowId = activeWindow.id;
-    browser.runtime.sendMessage({
+    void sendRuntimeMessage({
         type: 'closeWindow',
-        windowId
+        windowId: activeWindow.id,
     });
 };
 
@@ -180,10 +178,14 @@ const saveAndCloseWindow = async () => {
 };
 
 const switchToTab = (windowId?: number, tabId?: number) => {
-    browser.runtime.sendMessage({
+    if (windowId === undefined || tabId === undefined) {
+        return;
+    }
+
+    void sendRuntimeMessage({
         type: 'switchToTab',
         windowId,
-        tabId
+        tabId,
     });
 };
 
@@ -210,9 +212,13 @@ const saveAndClosePage = async (tab: MTab) => {
 };
 
 const closeTab = (tabId?: number) => {
-    browser.runtime.sendMessage({
+    if (tabId === undefined) {
+        return;
+    }
+
+    void sendRuntimeMessage({
         type: 'closeTab',
-        tabId
+        tabId,
     });
 };
 

@@ -53,7 +53,7 @@ import browser from 'webextension-polyfill';
 import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue';
 import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import type { Tab as MTab } from '@/models/tab';
-import { isRuntimeMessage } from '@/utils/runtimeMessage';
+import { isRuntimeMessage, sendRuntimeMessage } from '@/utils/runtimeMessage';
 import Tab from '@/widgets/tab.vue';
 
 const windows: Ref<MBrowsorWindow[]> = ref([]);
@@ -68,15 +68,15 @@ const handleRuntimeMessage = async (message: unknown) => {
         return;
     }
 
-    if (message.type === 'tabs' && Array.isArray(message.data)) {
-        windows.value = message.data as MBrowsorWindow[];
+    if (message.type === 'tabs') {
+        windows.value = message.data;
     }
 };
 
 onMounted(async () => {
     browser.runtime.onMessage.addListener(handleRuntimeMessage);
-    browser.runtime.sendMessage({
-        type: 'getTabs'
+    void sendRuntimeMessage({
+        type: 'getTabs',
     });
 
     const [tab] = await browser.tabs.query({ currentWindow: true, active: true });
@@ -112,24 +112,36 @@ const searchedWindowTabs = computed(() => {
 });
 
 const showWindowById = (windowId?: number) => {
-    browser.runtime.sendMessage({
+    if (windowId === undefined) {
+        return;
+    }
+
+    void sendRuntimeMessage({
         type: 'showWindow',
-        windowId
+        windowId,
     });
 };
 
 const switchToTab = (windowId?: number, tabId?: number) => {
-    browser.runtime.sendMessage({
+    if (windowId === undefined || tabId === undefined) {
+        return;
+    }
+
+    void sendRuntimeMessage({
         type: 'switchToTab',
         windowId,
-        tabId
+        tabId,
     });
 };
 
 const closeTab = (tabId?: number) => {
-    browser.runtime.sendMessage({
+    if (tabId === undefined) {
+        return;
+    }
+
+    void sendRuntimeMessage({
         type: 'closeTab',
-        tabId
+        tabId,
     });
 };
 
