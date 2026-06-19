@@ -53,6 +53,7 @@ import browser from 'webextension-polyfill';
 import { computed, onMounted, ref, type Ref } from 'vue';
 import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import type { Tab as MTab } from '@/models/tab';
+import { isRuntimeMessage } from '@/utils/runtimeMessage';
 import Tab from '@/widgets/tab.vue';
 
 const windows: Ref<MBrowsorWindow[]> = ref([]);
@@ -71,10 +72,14 @@ onMounted(async () => {
     tabId.value = tab.id;
 });
 
-browser.runtime.onMessage.addListener(async (message) => {
+browser.runtime.onMessage.addListener(async (message: unknown) => {
     console.log('message', message);
-    if (message.type === 'tabs') {
-        windows.value = message.data;
+    if (!isRuntimeMessage(message)) {
+        return;
+    }
+
+    if (message.type === 'tabs' && Array.isArray(message.data)) {
+        windows.value = message.data as MBrowsorWindow[];
     }
 });
 

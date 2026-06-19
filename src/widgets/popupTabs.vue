@@ -79,6 +79,7 @@ import { onMounted, ref, type Ref } from 'vue';
 import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import type { Tab as MTab } from '@/models/tab';
 import { addGroup as DAddGroup } from '@/data/page';
+import { isRuntimeMessage } from '@/utils/runtimeMessage';
 import Tab from '@/widgets/tab.vue';
 
 let inited = false;
@@ -97,10 +98,14 @@ onMounted(async () => {
     console.log('id', tab.id);
 });
 
-browser.runtime.onMessage.addListener(async (message) => {
+browser.runtime.onMessage.addListener(async (message: unknown) => {
     console.log('message', message);
-    if (message.type === 'tabs') {
-        windows.value = message.data;
+    if (!isRuntimeMessage(message)) {
+        return;
+    }
+
+    if (message.type === 'tabs' && Array.isArray(message.data)) {
+        windows.value = message.data as MBrowsorWindow[];
         if (!inited) {
             inited = true;
 

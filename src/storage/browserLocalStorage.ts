@@ -11,10 +11,10 @@ class BrowserLocalStorage extends AbstractStorage {
         if (data[key] == undefined) {
             return defaultValue;
         }
-        return data[key];
+        return data[key] as T;
     }
 
-    set(data: object): Promise<void> {
+    set(data: Record<string, unknown>): Promise<void> {
         return browser.storage.local.set(data);
     }
 }

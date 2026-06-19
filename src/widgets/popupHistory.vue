@@ -35,12 +35,17 @@ import browser from 'webextension-polyfill';
 import { ref, type Ref } from 'vue';
 import type { HistoryPage as MHistoryPage } from '@/models/historyPage';
 import { formatTimestamp } from '@/utils/datetime';
+import { isRuntimeMessage } from '@/utils/runtimeMessage';
 
 const historyPages: Ref<MHistoryPage[]> = ref([]);
 
-browser.runtime.onMessage.addListener(async (message) => {
-    if (message.type === 'history') {
-        historyPages.value = message.data;
+browser.runtime.onMessage.addListener(async (message: unknown) => {
+    if (!isRuntimeMessage(message)) {
+        return;
+    }
+
+    if (message.type === 'history' && Array.isArray(message.data)) {
+        historyPages.value = message.data as MHistoryPage[];
     }
 });
 

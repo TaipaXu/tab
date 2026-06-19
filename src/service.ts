@@ -2,20 +2,7 @@ import browser from 'webextension-polyfill';
 import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import type { HistoryPage as MHistoryPage } from '@/models/historyPage';
 import { getGroups } from '@/data/page';
-
-interface RuntimeMessage {
-    type: string;
-    tabId?: number;
-    windowId?: number;
-}
-
-const isRuntimeMessage = (message: unknown): message is RuntimeMessage => {
-    if (typeof message !== 'object' || message === null || !('type' in message)) {
-        return false;
-    }
-
-    return typeof (message as { type?: unknown }).type === 'string';
-};
+import { isRuntimeMessage } from '@/utils/runtimeMessage';
 
 const getAllTabs = async () => {
     const tabs = await browser.tabs.query({});
