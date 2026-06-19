@@ -13,11 +13,17 @@
             <v-icon
             v-if="$props.showSaveAction"
             icon="$databasePlus"
+            data-tooltip="Save and close tab"
+            data-tooltip-placement="left"
+            aria-label="Save and close tab"
             @click.stop="$emit('saveAndClose')"></v-icon>
 
             <v-icon
             icon="$close"
             style="margin-left: 8px;"
+            data-tooltip="Close tab"
+            data-tooltip-placement="left"
+            aria-label="Close tab"
             @click.stop="$emit('close')"></v-icon>
         </template>
     </v-list-item>

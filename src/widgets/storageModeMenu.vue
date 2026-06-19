@@ -4,7 +4,8 @@
             <v-btn
             v-bind="props"
             :icon="storageIcon"
-            :title="storageTitle"
+            :data-tooltip="storageTitle"
+            :aria-label="storageTitle"
             :loading="loading"></v-btn>
         </template>
 

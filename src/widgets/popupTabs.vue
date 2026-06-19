@@ -1,9 +1,14 @@
 <template>
     <v-toolbar class="popup-tabs-toolbar" density="compact" color="primary">
-        <v-toolbar-title class="title" @click="$emits('openHomepage')">
-            Tab
-            <span class="count">
-                {{ windows.reduce((total, window) => total + window.tabs.length, 0) }}
+        <v-toolbar-title
+        class="title"
+        aria-label="Open homepage"
+        @click="$emits('openHomepage')">
+            <span class="title__content" data-tooltip="Open homepage">
+                Tab
+                <span class="count">
+                    {{ windows.reduce((total, window) => total + window.tabs.length, 0) }}
+                </span>
             </span>
         </v-toolbar-title>
 
@@ -12,33 +17,46 @@
         <v-btn
         v-show="windows[windowIndex]?.id !== windowId"
         icon="$eyeOutline"
+        data-tooltip="Show selected window"
+        aria-label="Show selected window"
         @click="showWindow"></v-btn>
 
         <v-btn
         icon="$deleteOutline"
+        data-tooltip="Close selected window"
+        aria-label="Close selected window"
         @click="closeWindow"></v-btn>
 
         <v-btn
         icon="$closeBoxMultipleOutline"
-        title="Close duplicate tabs"
+        data-tooltip="Close duplicate tabs"
+        aria-label="Close duplicate tabs"
         @click="closeDuplicateTabs"></v-btn>
 
         <v-btn
         icon="$databasePlus"
+        data-tooltip="Save and close selected window"
+        aria-label="Save and close selected window"
         @click="saveAndCloseWindow"></v-btn>
 
         <v-btn
         icon="$databaseOutline"
+        data-tooltip="Open saved tabs"
+        aria-label="Open saved tabs"
         @click="openSavePage"></v-btn>
 
         <storage-mode-menu></storage-mode-menu>
 
         <v-btn
         icon="$history"
+        data-tooltip="Open history"
+        aria-label="Open history"
         @click="$emits('enterHistoryMode')"></v-btn>
 
         <v-btn
         icon="$magnify"
+        data-tooltip="Search tabs"
+        aria-label="Search tabs"
         @click="$emits('enterSearchMode')"></v-btn>
 
 
@@ -54,7 +72,9 @@
             show-arrows>
                 <v-tab
                 v-for="(window, index) in windows"
-                :key="index">
+                :key="index"
+                :data-tooltip="`Window ${index + 1} of ${windows.length}, ${window.tabs.length} tabs`"
+                :aria-label="`Window ${index + 1} of ${windows.length}, ${window.tabs.length} tabs`">
                     {{ index + 1 }} / {{ windows.length }}
                     <span class="count">{{ window.tabs.length }}</span>
                 </v-tab>

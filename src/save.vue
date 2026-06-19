@@ -2,9 +2,14 @@
     <v-layout
     density="compact">
         <v-app-bar color="primary">
-            <v-toolbar-title class="title" @click="openHomepage">
-                Tab
-                <span class="count">{{ groups.reduce((total, window) => total + window.pages.length, 0) }}</span>
+            <v-toolbar-title
+            class="title"
+            aria-label="Open homepage"
+            @click="openHomepage">
+                <span class="title__content" data-tooltip="Open homepage">
+                    Tab
+                    <span class="count">{{ groups.reduce((total, window) => total + window.pages.length, 0) }}</span>
+                </span>
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
@@ -25,6 +30,8 @@
                     variant="text"
                     density="compact"
                     style="margin-left: 10px;"
+                    data-tooltip="Open saved group"
+                    aria-label="Open saved group"
                     @click="openGroup(group)"></v-btn>
 
                     <v-btn
@@ -32,6 +39,8 @@
                     variant="text"
                     density="compact"
                     style="margin-left: 10px;"
+                    data-tooltip="Remove saved group"
+                    aria-label="Remove saved group"
                     @click="removeGroup(group)"></v-btn>
                 </v-list-subheader>
                 <v-list-item
@@ -51,12 +60,17 @@
                     <template #append>
                         <v-icon
                         icon="$close"
+                        data-tooltip="Remove saved page"
+                        data-tooltip-placement="left"
+                        aria-label="Remove saved page"
                         @click.stop="removePage(group, page)"></v-icon>
                     </template>
                 </v-list-item>
             </v-list>
         </v-main>
     </v-layout>
+
+    <tooltip-host></tooltip-host>
 </template>
 
 <script setup lang="ts">
@@ -70,6 +84,7 @@ import {
 import type { Group as MGroup } from '@/models/group';
 import type { Page as MPage } from '@/models/page';
 import StorageModeMenu from '@/widgets/storageModeMenu.vue';
+import TooltipHost from '@/widgets/tooltipHost.vue';
 
 const groups: Ref<MGroup[]> = ref([]);
 
@@ -143,6 +158,11 @@ body {
 .title {
     cursor: pointer;
     user-select: none;
+}
+
+.title__content {
+    display: inline-flex;
+    align-items: baseline;
 }
 
 .count {

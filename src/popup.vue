@@ -13,6 +13,8 @@
     v-if="mode === Mode.History"
     @open-homepage="openHomepage"
     @exit-history-mode="mode = Mode.Tab" />
+
+    <tooltip-host></tooltip-host>
 </template>
 
 <script setup lang="ts">
@@ -20,6 +22,7 @@ import { ref, type Ref } from 'vue';
 import PopupTabs from '@/widgets/popupTabs.vue';
 import PopupSearch from '@/widgets/popupSearch.vue';
 import PopupHistory from '@/widgets/popupHistory.vue';
+import TooltipHost from '@/widgets/tooltipHost.vue';
 
 const enum Mode {
     Tab,
@@ -44,6 +47,11 @@ const openHomepage = () => {
     .title {
         cursor: pointer;
         user-select: none;
+    }
+
+    .title__content {
+        display: inline-flex;
+        align-items: baseline;
     }
 
     .count {

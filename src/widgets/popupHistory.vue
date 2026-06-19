@@ -1,14 +1,21 @@
 <template>
     <div class="search-section">
         <v-toolbar density="compact" color="primary">
-            <v-toolbar-title class="title" @click="$emits('openHomepage')">
-                History
+            <v-toolbar-title
+            class="title"
+            aria-label="Open homepage"
+            @click="$emits('openHomepage')">
+                <span class="title__content" data-tooltip="Open homepage">
+                    History
+                </span>
             </v-toolbar-title>
 
             <v-spacer></v-spacer>
 
             <v-btn
             icon="$close"
+            data-tooltip="Close history"
+            aria-label="Close history"
             @click="$emits('exitHistoryMode')"></v-btn>
         </v-toolbar>
 

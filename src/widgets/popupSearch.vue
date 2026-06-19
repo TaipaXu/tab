@@ -11,11 +11,23 @@
                 density="compact"
                 variant="solo"
                 label="Search tabs"
-                append-inner-icon="$close"
                 single-line
                 hide-details
-                autofocus
-                @click:append-inner="$emits('exitSearchMode')"></v-text-field>
+                autofocus>
+                    <template #append-inner>
+                        <v-icon
+                        class="search__close"
+                        icon="$close"
+                        data-tooltip="Close search"
+                        data-tooltip-placement="left"
+                        aria-label="Close search"
+                        role="button"
+                        tabindex="0"
+                        @click="$emits('exitSearchMode')"
+                        @keydown.enter.prevent="$emits('exitSearchMode')"
+                        @keydown.space.prevent="$emits('exitSearchMode')"></v-icon>
+                    </template>
+                </v-text-field>
             </v-card-text>
         </v-card>
 
@@ -32,6 +44,8 @@
                     icon="$eyeOutline"
                     variant="text"
                     density="compact"
+                    data-tooltip="Show window"
+                    aria-label="Show window"
                     @click="showWindowById(browserWindow.id)"></v-btn>
                 </v-list-subheader>
 
@@ -190,6 +204,10 @@ const $emits = defineEmits(['exitSearchMode']);
             flex-direction: row;
             justify-content: space-between;
         }
+    }
+
+    &__close {
+        cursor: pointer;
     }
 }
 </style>
