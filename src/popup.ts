@@ -1,9 +1,5 @@
 import App from './popup.vue';
 import { createApp } from 'vue';
-import { createVuetify } from 'vuetify';
-import 'vuetify/styles';
-import colors from 'vuetify/lib/util/colors.mjs';
-import { aliases, mdi } from 'vuetify/iconsets/mdi-svg';
 import {
     mdiEyeOutline,
     mdiDeleteOutline,
@@ -15,44 +11,18 @@ import {
     mdiArrowLeftBoldBoxOutline,
     mdiClose,
 } from '@mdi/js';
-import { getSystemTheme } from '@/utils/theme';
+import { createExtensionVuetify } from '@/utils/extensionVuetify';
 
-const vuetify = createVuetify({
-    theme: {
-        defaultTheme: getSystemTheme(),
-        themes: {
-            light: {
-                colors: {
-                    primary: colors.red.base,
-                    secondary: colors.red.lighten4,
-                },
-            },
-            dark: {
-                colors: {
-                    primary: colors.red.darken4,
-                    secondary: colors.red.lighten4,
-                },
-            },
-        },
-    },
-    icons: {
-        defaultSet: 'mdi',
-        aliases: {
-            ...aliases,
-            eyeOutline: mdiEyeOutline,
-            deleteOutline: mdiDeleteOutline,
-            databasePlus: mdiDatabasePlus,
-            databaseOutline: mdiDatabaseOutline,
-            history: mdiHistory,
-            magnify: mdiMagnify,
-            arrowRightBoldBoxOutline: mdiArrowRightBoldBoxOutline,
-            arrowLeftBoldBoxOutline: mdiArrowLeftBoldBoxOutline,
-            close: mdiClose,
-        },
-        sets: {
-            mdi,
-        },
-    },
+const vuetify = createExtensionVuetify({
+    eyeOutline: mdiEyeOutline,
+    deleteOutline: mdiDeleteOutline,
+    databasePlus: mdiDatabasePlus,
+    databaseOutline: mdiDatabaseOutline,
+    history: mdiHistory,
+    magnify: mdiMagnify,
+    arrowRightBoldBoxOutline: mdiArrowRightBoldBoxOutline,
+    arrowLeftBoldBoxOutline: mdiArrowLeftBoldBoxOutline,
+    close: mdiClose,
 });
 
 const app = createApp(App);
