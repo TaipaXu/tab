@@ -75,7 +75,7 @@
 
 <script setup lang="ts">
 import browser from 'webextension-polyfill';
-import { onMounted, ref, type Ref } from 'vue';
+import { onMounted, onUnmounted, ref, type Ref } from 'vue';
 import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import type { Tab as MTab } from '@/models/tab';
 import { addGroup as DAddGroup } from '@/data/page';
@@ -87,18 +87,7 @@ const windows: Ref<MBrowsorWindow[]> = ref([]);
 const windowIndex: Ref<number> = ref(0);
 const windowId: Ref<number | undefined> = ref();
 const tabId: Ref<number | undefined> = ref();
-onMounted(async () => {
-    const [tab] = await browser.tabs.query({ currentWindow: true, active: true });
-    if (!tab) {
-        return;
-    }
-
-    windowId.value = tab.windowId;
-    tabId.value = tab.id;
-    console.log('id', tab.id);
-});
-
-browser.runtime.onMessage.addListener(async (message: unknown) => {
+const handleRuntimeMessage = async (message: unknown) => {
     console.log('message', message);
     if (!isRuntimeMessage(message)) {
         return;
@@ -123,10 +112,26 @@ browser.runtime.onMessage.addListener(async (message: unknown) => {
             windowIndex.value = windows.value.length - 1;
         }
     }
+};
+
+onMounted(async () => {
+    browser.runtime.onMessage.addListener(handleRuntimeMessage);
+    browser.runtime.sendMessage({
+        type: 'getTabs'
+    });
+
+    const [tab] = await browser.tabs.query({ currentWindow: true, active: true });
+    if (!tab) {
+        return;
+    }
+
+    windowId.value = tab.windowId;
+    tabId.value = tab.id;
+    console.log('id', tab.id);
 });
 
-browser.runtime.sendMessage({
-    type: 'getTabs'
+onUnmounted(() => {
+    browser.runtime.onMessage.removeListener(handleRuntimeMessage);
 });
 
 const showWindow = () => {

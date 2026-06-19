@@ -50,7 +50,7 @@
 
 <script setup lang="ts">
 import browser from 'webextension-polyfill';
-import { computed, onMounted, ref, type Ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue';
 import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
 import type { Tab as MTab } from '@/models/tab';
 import { isRuntimeMessage } from '@/utils/runtimeMessage';
@@ -62,7 +62,23 @@ const tabId: Ref<number | undefined> = ref();
 const $searchInput = ref();
 const searchText: Ref<string> = ref('');
 
+const handleRuntimeMessage = async (message: unknown) => {
+    console.log('message', message);
+    if (!isRuntimeMessage(message)) {
+        return;
+    }
+
+    if (message.type === 'tabs' && Array.isArray(message.data)) {
+        windows.value = message.data as MBrowsorWindow[];
+    }
+};
+
 onMounted(async () => {
+    browser.runtime.onMessage.addListener(handleRuntimeMessage);
+    browser.runtime.sendMessage({
+        type: 'getTabs'
+    });
+
     const [tab] = await browser.tabs.query({ currentWindow: true, active: true });
     if (!tab) {
         return;
@@ -72,19 +88,8 @@ onMounted(async () => {
     tabId.value = tab.id;
 });
 
-browser.runtime.onMessage.addListener(async (message: unknown) => {
-    console.log('message', message);
-    if (!isRuntimeMessage(message)) {
-        return;
-    }
-
-    if (message.type === 'tabs' && Array.isArray(message.data)) {
-        windows.value = message.data as MBrowsorWindow[];
-    }
-});
-
-browser.runtime.sendMessage({
-    type: 'getTabs'
+onUnmounted(() => {
+    browser.runtime.onMessage.removeListener(handleRuntimeMessage);
 });
 
 const searchedWindowTabs = computed(() => {
