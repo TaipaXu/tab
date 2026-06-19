@@ -2,6 +2,7 @@ import App from './popup.vue';
 import { createApp } from 'vue';
 import {
     mdiEyeOutline,
+    mdiCloseBoxMultipleOutline,
     mdiDeleteOutline,
     mdiDatabasePlus,
     mdiDatabaseOutline,
@@ -15,6 +16,7 @@ import { createExtensionVuetify } from '@/utils/extensionVuetify';
 
 const vuetify = createExtensionVuetify({
     eyeOutline: mdiEyeOutline,
+    closeBoxMultipleOutline: mdiCloseBoxMultipleOutline,
     deleteOutline: mdiDeleteOutline,
     databasePlus: mdiDatabasePlus,
     databaseOutline: mdiDatabaseOutline,

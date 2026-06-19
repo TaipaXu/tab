@@ -39,6 +39,81 @@ const getAllTabs = async () => {
     });
 };
 
+const getCurrentTabId = async (fallbackTabId?: number) => {
+    if (fallbackTabId !== undefined) {
+        return fallbackTabId;
+    }
+
+    const [tab] = await browser.tabs.query({
+        active: true,
+        lastFocusedWindow: true,
+    });
+    return tab?.id;
+};
+
+const isNewerTab = (tab: browser.Tabs.Tab, latestTab: browser.Tabs.Tab) => {
+    const lastAccessed = tab.lastAccessed ?? 0;
+    const latestLastAccessed = latestTab.lastAccessed ?? 0;
+    if (lastAccessed !== latestLastAccessed) {
+        return lastAccessed > latestLastAccessed;
+    }
+
+    return (tab.id ?? 0) > (latestTab.id ?? 0);
+};
+
+const findDuplicateTabIdsToClose = (tabs: browser.Tabs.Tab[], currentTabId?: number) => {
+    const tabsByUrl = new Map<string, browser.Tabs.Tab[]>();
+    for (const tab of tabs) {
+        if (!tab.url) {
+            continue;
+        }
+
+        const duplicateTabs = tabsByUrl.get(tab.url);
+        if (duplicateTabs) {
+            duplicateTabs.push(tab);
+        } else {
+            tabsByUrl.set(tab.url, [tab]);
+        }
+    }
+
+    const tabIdsToClose: number[] = [];
+    for (const duplicateTabs of tabsByUrl.values()) {
+        if (duplicateTabs.length < 2) {
+            continue;
+        }
+
+        const tabToKeep =
+            duplicateTabs.find((tab) => tab.id === currentTabId) ??
+            duplicateTabs.reduce((latestTab, tab) =>
+                isNewerTab(tab, latestTab) ? tab : latestTab,
+            );
+
+        duplicateTabs.forEach((tab) => {
+            if (tab.id !== undefined && tab.id !== tabToKeep.id) {
+                tabIdsToClose.push(tab.id);
+            }
+        });
+    }
+
+    return tabIdsToClose;
+};
+
+const closeDuplicateTabs = async (currentTabId?: number) => {
+    const tabs = await browser.tabs.query({});
+    const tabIdsToClose = findDuplicateTabIdsToClose(tabs, await getCurrentTabId(currentTabId));
+
+    if (tabIdsToClose.length > 0) {
+        await browser.tabs.remove(tabIdsToClose);
+    }
+
+    await getAllTabs();
+    await getTabCount();
+
+    return {
+        closedCount: tabIdsToClose.length,
+    };
+};
+
 const getTabCount = async () => {
     const tabs = await browser.tabs.query({});
     const count = tabs.length;
@@ -93,6 +168,8 @@ browser.runtime.onMessage.addListener(
             case 'closeTab':
                 await browser.tabs.remove(message.tabId);
                 break;
+            case 'closeDuplicateTabs':
+                return closeDuplicateTabs(message.currentTabId);
             case 'switchToTab':
                 await browser.windows.update(message.windowId, { focused: true });
                 await browser.tabs.update(message.tabId, { active: true });

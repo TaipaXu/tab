@@ -19,6 +19,11 @@
         @click="closeWindow"></v-btn>
 
         <v-btn
+        icon="$closeBoxMultipleOutline"
+        title="Close duplicate tabs"
+        @click="closeDuplicateTabs"></v-btn>
+
+        <v-btn
         icon="$databasePlus"
         @click="saveAndCloseWindow"></v-btn>
 
@@ -156,6 +161,13 @@ const closeWindow = () => {
     void sendRuntimeMessage({
         type: 'closeWindow',
         windowId: activeWindow.id,
+    });
+};
+
+const closeDuplicateTabs = () => {
+    void sendRuntimeMessage({
+        type: 'closeDuplicateTabs',
+        currentTabId: tabId.value,
     });
 };
 

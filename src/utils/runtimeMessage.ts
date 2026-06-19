@@ -7,6 +7,7 @@ export type RuntimeMessage =
     | { type: 'getTabs' }
     | { type: 'tabs'; data: BrowserWindow[] }
     | { type: 'closeTab'; tabId: number }
+    | { type: 'closeDuplicateTabs'; currentTabId?: number }
     | { type: 'switchToTab'; windowId: number; tabId: number }
     | { type: 'showWindow'; windowId: number }
     | { type: 'closeWindow'; windowId: number }
@@ -33,6 +34,8 @@ export const isRuntimeMessage = (message: unknown): message is RuntimeMessage =>
         case 'getSaves':
         case 'getHistory':
             return true;
+        case 'closeDuplicateTabs':
+            return message.currentTabId === undefined || isNumber(message.currentTabId);
         case 'tabs':
         case 'saves':
         case 'history':
