@@ -11,7 +11,7 @@
 
         <template #append>
             <v-icon
-            v-if="instance?.vnode.props?.onSaveAndClose !== undefined"
+            v-if="$props.showSaveAction"
             icon="$databasePlus"
             @click.stop="$emit('saveAndClose')"></v-icon>
 
@@ -24,8 +24,6 @@
 </template>
 
 <script setup lang="ts">
-import { getCurrentInstance } from 'vue';
-
 defineProps({
     title: {
         type: String
@@ -36,12 +34,12 @@ defineProps({
     active: {
         type: Boolean,
         default: false
+    },
+    showSaveAction: {
+        type: Boolean,
+        default: false
     }
 });
-
-const instance = getCurrentInstance();
-console.log('instance', instance?.vnode.props?.onSaveAndClose);
-
 
 defineEmits(['saveAndClose', 'close']);
 </script>

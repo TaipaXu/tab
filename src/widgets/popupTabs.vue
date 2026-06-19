@@ -65,6 +65,7 @@
                 :title="tab.title"
                 :icon="tab.favIcon"
                 :active="tabId === tab.id"
+                show-save-action
                 @click="switchToTab(browserWindow.id, tab.id)"
                 @save-and-close="saveAndClosePage(tab)"
                 @close="closeTab(tab.id)" />
