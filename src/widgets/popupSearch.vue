@@ -51,12 +51,12 @@
 <script setup lang="ts">
 import browser from 'webextension-polyfill';
 import { computed, onMounted, onUnmounted, ref, type Ref } from 'vue';
-import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
+import type { BrowserWindow as MBrowserWindow } from '@/models/browserWindow';
 import type { Tab as MTab } from '@/models/tab';
 import { isRuntimeMessage, sendRuntimeMessage } from '@/utils/runtimeMessage';
 import Tab from '@/widgets/tab.vue';
 
-const windows: Ref<MBrowsorWindow[]> = ref([]);
+const windows: Ref<MBrowserWindow[]> = ref([]);
 const windowId: Ref<number | undefined> = ref();
 const tabId: Ref<number | undefined> = ref();
 const $searchInput = ref();
@@ -93,7 +93,7 @@ onUnmounted(() => {
 });
 
 const searchedWindowTabs = computed(() => {
-    const windowTabs: MBrowsorWindow[] = [];
+    const windowTabs: MBrowserWindow[] = [];
     for (const window of windows.value) {
         const tabs: MTab[] = [];
         for (const tab of window.tabs) {

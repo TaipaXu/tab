@@ -2,7 +2,7 @@
     <popup-tabs
     v-if="mode === Mode.Tab"
     @open-homepage="openHomepage"
-    @enter-history-mode="mode = Mode.Hisotry"
+    @enter-history-mode="mode = Mode.History"
     @enter-search-mode="mode = Mode.Search" />
 
     <popup-search
@@ -10,7 +10,7 @@
     @exit-search-mode="mode = Mode.Tab" />
 
     <popup-history
-    v-if="mode === Mode.Hisotry"
+    v-if="mode === Mode.History"
     @open-homepage="openHomepage"
     @exit-history-mode="mode = Mode.Tab" />
 </template>
@@ -24,7 +24,7 @@ import PopupHistory from '@/widgets/popupHistory.vue';
 const enum Mode {
     Tab,
     Search,
-    Hisotry
+    History
 }
 
 const mode: Ref<Mode> = ref(Mode.Tab);

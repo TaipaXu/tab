@@ -2,7 +2,7 @@
     <div class="search-section">
         <v-toolbar density="compact" color="primary">
             <v-toolbar-title class="title" @click="$emits('openHomepage')">
-                Hisotry
+                History
             </v-toolbar-title>
 
             <v-spacer></v-spacer>

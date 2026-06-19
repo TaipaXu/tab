@@ -77,14 +77,14 @@
 <script setup lang="ts">
 import browser from 'webextension-polyfill';
 import { onMounted, onUnmounted, ref, type Ref } from 'vue';
-import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
+import type { BrowserWindow as MBrowserWindow } from '@/models/browserWindow';
 import type { Tab as MTab } from '@/models/tab';
 import { addGroup as DAddGroup } from '@/data/page';
 import { isRuntimeMessage, sendRuntimeMessage } from '@/utils/runtimeMessage';
 import Tab from '@/widgets/tab.vue';
 
 let inited = false;
-const windows: Ref<MBrowsorWindow[]> = ref([]);
+const windows: Ref<MBrowserWindow[]> = ref([]);
 const windowIndex: Ref<number> = ref(0);
 const windowId: Ref<number | undefined> = ref();
 const tabId: Ref<number | undefined> = ref();

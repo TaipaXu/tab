@@ -1,5 +1,5 @@
 import browser from 'webextension-polyfill';
-import type { BrowsorWindow as MBrowsorWindow } from '@/models/browsorWindow';
+import type { BrowserWindow as MBrowserWindow } from '@/models/browserWindow';
 import type { HistoryPage as MHistoryPage } from '@/models/historyPage';
 import { getGroups } from '@/data/page';
 import { isRuntimeMessage, sendRuntimeMessage } from '@/utils/runtimeMessage';
@@ -7,7 +7,7 @@ import { isRuntimeMessage, sendRuntimeMessage } from '@/utils/runtimeMessage';
 const getAllTabs = async () => {
     const tabs = await browser.tabs.query({});
     console.log('tabs', tabs);
-    const windowsById = new Map<number, MBrowsorWindow>();
+    const windowsById = new Map<number, MBrowserWindow>();
     for (const tab of tabs) {
         const { windowId } = tab;
         if (windowId === undefined) {

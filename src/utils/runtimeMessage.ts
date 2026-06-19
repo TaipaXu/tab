@@ -1,11 +1,11 @@
 import browser from 'webextension-polyfill';
-import type { BrowsorWindow } from '@/models/browsorWindow';
+import type { BrowserWindow } from '@/models/browserWindow';
 import type { Group } from '@/models/group';
 import type { HistoryPage } from '@/models/historyPage';
 
 export type RuntimeMessage =
     | { type: 'getTabs' }
-    | { type: 'tabs'; data: BrowsorWindow[] }
+    | { type: 'tabs'; data: BrowserWindow[] }
     | { type: 'closeTab'; tabId: number }
     | { type: 'switchToTab'; windowId: number; tabId: number }
     | { type: 'showWindow'; windowId: number }
