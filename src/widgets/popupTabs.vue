@@ -1,5 +1,5 @@
 <template>
-    <v-toolbar density="compact" color="primary">
+    <v-toolbar class="popup-tabs-toolbar" density="compact" color="primary">
         <v-toolbar-title class="title" @click="$emits('openHomepage')">
             Tab
             <span class="count">
@@ -266,6 +266,26 @@ const $emits = defineEmits(['openHomepage', 'enterHistoryMode', 'enterSearchMode
     &::-webkit-scrollbar-thumb {
         background: #eaeaea;
         border-radius: 3px;
+    }
+}
+
+.popup-tabs-toolbar {
+    .v-toolbar__content {
+        padding-inline: 4px;
+    }
+
+    .v-toolbar__content > .v-toolbar-title {
+        margin-inline-start: 4px;
+    }
+
+    .v-spacer {
+        min-width: 4px;
+    }
+
+    .v-btn--icon {
+        width: 30px;
+        min-width: 30px;
+        height: 30px;
     }
 }
 </style>
