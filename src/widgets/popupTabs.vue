@@ -155,14 +155,14 @@ const closeWindow = () => {
     });
 };
 
-const saveAndCloseWindow = () => {
+const saveAndCloseWindow = async () => {
     const activeWindow = windows.value[windowIndex.value];
     if (!activeWindow) {
         return;
     }
 
     const tabs = activeWindow.tabs;
-    DAddGroup({
+    await DAddGroup({
         id: crypto.randomUUID(),
         pages: tabs.map((tab) => ({
             id: crypto.randomUUID(),
@@ -189,8 +189,8 @@ const openSavePage = () => {
     });
 };
 
-const saveAndClosePage = (tab: MTab) => {
-    DAddGroup({
+const saveAndClosePage = async (tab: MTab) => {
+    await DAddGroup({
         id: crypto.randomUUID(),
         pages: [
             {
