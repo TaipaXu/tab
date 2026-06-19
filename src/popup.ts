@@ -11,6 +11,8 @@ import {
     mdiArrowRightBoldBoxOutline,
     mdiArrowLeftBoldBoxOutline,
     mdiClose,
+    mdiCloudSyncOutline,
+    mdiContentSaveOutline,
 } from '@mdi/js';
 import { createExtensionVuetify } from '@/utils/extensionVuetify';
 
@@ -25,6 +27,8 @@ const vuetify = createExtensionVuetify({
     arrowRightBoldBoxOutline: mdiArrowRightBoldBoxOutline,
     arrowLeftBoldBoxOutline: mdiArrowLeftBoldBoxOutline,
     close: mdiClose,
+    cloudSyncOutline: mdiCloudSyncOutline,
+    contentSaveOutline: mdiContentSaveOutline,
 });
 
 const app = createApp(App);

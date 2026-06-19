@@ -6,6 +6,10 @@
                 Tab
                 <span class="count">{{ groups.reduce((total, window) => total + window.pages.length, 0) }}</span>
             </v-toolbar-title>
+
+            <v-spacer></v-spacer>
+
+            <storage-mode-menu @change="getGroups"></storage-mode-menu>
         </v-app-bar>
 
         <v-main class="main">
@@ -65,6 +69,7 @@ import {
 } from '@/data/page';
 import type { Group as MGroup } from '@/models/group';
 import type { Page as MPage } from '@/models/page';
+import StorageModeMenu from '@/widgets/storageModeMenu.vue';
 
 const groups: Ref<MGroup[]> = ref([]);
 

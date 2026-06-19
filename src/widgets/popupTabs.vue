@@ -31,6 +31,8 @@
         icon="$databaseOutline"
         @click="openSavePage"></v-btn>
 
+        <storage-mode-menu></storage-mode-menu>
+
         <v-btn
         icon="$history"
         @click="$emits('enterHistoryMode')"></v-btn>
@@ -86,6 +88,7 @@ import type { BrowserWindow as MBrowserWindow } from '@/models/browserWindow';
 import type { Tab as MTab } from '@/models/tab';
 import { addGroup as DAddGroup } from '@/data/page';
 import { isRuntimeMessage, sendRuntimeMessage } from '@/utils/runtimeMessage';
+import StorageModeMenu from '@/widgets/storageModeMenu.vue';
 import Tab from '@/widgets/tab.vue';
 
 let inited = false;
